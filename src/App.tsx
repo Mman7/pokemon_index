@@ -1,15 +1,11 @@
 // import { useState } from 'react'
 
-
-
 function App() {
   return (
     <>
-      <div className="">
-        <p>test </p>
-      </div>
+      <div className=""></div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
