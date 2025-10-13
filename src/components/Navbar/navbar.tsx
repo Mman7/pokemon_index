@@ -5,7 +5,10 @@ export default function Navbar() {
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
-        <label htmlFor="my-drawer-2" className="btn lg:hidden">
+        <label
+          htmlFor="my-drawer-2"
+          className="btn border-0 bg-transparent lg:hidden"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -21,7 +24,7 @@ export default function Navbar() {
             />
           </svg>
         </label>
-        <div className="items-center hidden md:block">
+        <div className="ml-4 items-center hidden md:block">
           <img className="w-60" src={logo} alt="Pokemon Index" />
         </div>
       </div>
