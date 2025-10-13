@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 
 import Navbar from "./components/Navbar/navbar";
-import Body from "./components/side_bar";
+import Body from "./body";
 
 function App() {
   return (
