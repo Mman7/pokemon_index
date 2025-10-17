@@ -24,7 +24,7 @@ export default function Navbar() {
             />
           </svg>
         </label>
-        <div className="ml-4 items-center hidden md:block">
+        <div className="ml-4 hidden items-center md:block">
           <img className="w-60" src={logo} alt="Pokemon Index" />
         </div>
       </div>
