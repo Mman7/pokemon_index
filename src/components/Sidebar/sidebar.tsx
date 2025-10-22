@@ -2,13 +2,15 @@ import { useState } from "react";
 import SidebarItem from "./sidebar_item";
 
 export default function Sidebar() {
-  const [select, setSelect] = useState("Dashboard");
-  const items_list1 = ["Pokemon", "Move", "Ability"];
+  const [select, setSelect] = useState("Home");
+  const items_list1 = ["Home", "Pokemon", "Move", "Ability"];
   const items_list2 = ["Location"];
   const items_list3 = ["Item", "Berry", "Game"];
-
+  const dividedLine = (
+    <div className="mx-3 my-1.5 flex items-center border-t border-gray-700" />
+  );
   return (
-    <div>
+    <ul className="menu bg-base-200 text-base-content min-h-full w-70 p-4 sm:w-80">
       {items_list1.map((item) => (
         <SidebarItem
           title={item}
@@ -17,7 +19,7 @@ export default function Sidebar() {
           isSelected={select === item}
         />
       ))}
-      <div className="border-t border-gray-700" />
+      {dividedLine}
       {items_list2.map((item) => (
         <SidebarItem
           title={item}
@@ -26,7 +28,7 @@ export default function Sidebar() {
           isSelected={select === item}
         />
       ))}
-      <div className="border-t border-gray-700" />
+      {dividedLine}
       {items_list3.map((item) => (
         <SidebarItem
           title={item}
@@ -35,6 +37,6 @@ export default function Sidebar() {
           isSelected={select === item}
         />
       ))}
-    </div>
+    </ul>
   );
 }
