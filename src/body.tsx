@@ -1,29 +1,27 @@
-import ItemCard from "./components/pokemon_item_card";
+import { Route, Routes } from "react-router";
 import Sidebar from "./components/Sidebar/sidebar";
+import PokemonList from "./pages/pokemon_list";
+import PokemonDetails from "./pages/pokemon_details_page.tsx/pokemon_details";
+import Home from "./pages/homepage/home_page";
 export default function Body() {
-  const elements = [];
-  for (let i = 1; i <= 20; i++) {
-    elements.push(
-      <ItemCard key={i} imgSrc="" pokemonName="" pokemonTypes={[]} />,
-    );
-  }
   return (
     <div className="drawer lg:drawer-open">
-      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-5">
-        {/* Page content here */}
-        {elements}
+      <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/pokemon" element={<PokemonList />} />
+          <Route path="/pokemon/:name" element={<PokemonDetails />} />
+        </Routes>
       </div>
       <div className="drawer-side">
         <label
-          htmlFor="my-drawer-2"
+          htmlFor="my-drawer-3"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-70 p-4 sm:w-80">
-          {/* Sidebar content here */}
-          <Sidebar />
-        </ul>
+        <Sidebar />
       </div>
     </div>
   );
