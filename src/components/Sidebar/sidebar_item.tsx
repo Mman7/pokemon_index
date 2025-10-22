@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 interface SidebarItemProps {
   title: string;
   isSelected: boolean;
@@ -10,17 +12,19 @@ export default function SidebarItem({
   isSelected,
 }: SidebarItemProps) {
   const selectedStlyle = isSelected
-    ? "font-medium  text-white backdrop-brightness-175"
-    : "text-gray-500 hover:backdrop-brightness-50";
+    ? "font-medium text-white dark:backdrop-brightness-10 backdrop-brightness-20"
+    : "text-black hover:backdrop-brightness-150 dark:text-white ";
 
   return (
-    <li key={title}>
-      <button
-        onClick={callback}
-        className={`"text-gray-500 hover:backdrop-brightness-50" block w-full rounded-lg px-4 py-2 text-left text-base/8 ${selectedStlyle}`}
-      >
-        {title}
-      </button>
-    </li>
+    <Link to={`/${title.toLocaleLowerCase()}`}>
+      <li key={title}>
+        <button
+          onClick={callback}
+          className={`block w-full px-4 py-2 text-left text-base/8 ${selectedStlyle}`}
+        >
+          {title}
+        </button>
+      </li>
+    </Link>
   );
 }
