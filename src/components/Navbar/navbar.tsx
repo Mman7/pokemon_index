@@ -6,7 +6,7 @@ export default function Navbar() {
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
         <label
-          htmlFor="my-drawer-2"
+          htmlFor="my-drawer-3"
           className="btn border-0 bg-transparent lg:hidden"
         >
           <svg
