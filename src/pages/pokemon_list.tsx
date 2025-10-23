@@ -1,40 +1,48 @@
-import { useState } from "react";
 import PokemonCard from "../components/pokemon_item_card";
-import { useQuery } from "@tanstack/react-query";
-import { PokemonClient } from "pokenode-ts";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { retrieveData } from "../api/pokemon_api";
+import LoadingView from "../components/loading";
 
-const api = new PokemonClient();
-
-const retrieveData = async (limit: number) => {
-  var data = await api.listPokemons(0, limit);
-  return data.results;
-};
+//TODO finish search functionality
+//TODO add when user back to pokemon page keep position
 
 export default function PokemonList() {
-  const [limit, setlimit] = useState(20);
+  const { ref, inView } = useInView();
   const {
-    data: listData,
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
     error,
-    isLoading: listLoading,
-  } = useQuery({
-    queryKey: ["pokemonlist"],
-    queryFn: () => retrieveData(limit),
+  } = useInfiniteQuery({
+    queryKey: ["pokemons"],
+    queryFn: retrieveData,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if (!lastPage.next) return undefined; // stop fetching when no more
+      return pages.length * 20; // offset for next fetch
+    },
   });
 
-  if (listLoading)
-    return (
-      <div className="grid h-3/4 justify-items-center">
-        <span className="loading loading-ring loading-xl m-auto"></span>
-      </div>
-    );
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
-  if (error) return <div>An error occurred: {error.message}</div>;
+  if (isLoading) return <LoadingView />;
+
+  if (error) return <div>An error occurred: {(error as Error).message}</div>;
 
   return (
     <div className="grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-5">
-      {(listData || []).map((pokemon: any) => (
-        <PokemonCard key={pokemon.id ?? pokemon.name} name={pokemon.name} />
+      {(data?.pages.flatMap((page) => page.results) ?? []).map((pokemon) => (
+        <PokemonCard key={pokemon.name} name={pokemon.name} />
       ))}
+      <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
     </div>
   );
 }
