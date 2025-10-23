@@ -1,15 +1,18 @@
 import PokemonCard from "../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { retrieveData } from "../api/pokemon_api";
 import LoadingView from "../components/loading";
+import { Outlet, useLocation } from "react-router";
 
 //TODO finish search functionality
-//TODO add when user back to pokemon page keep position
 
 export default function PokemonList() {
   const { ref, inView } = useInView();
+  const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const location = useLocation();
+
   const {
     data,
     fetchNextPage,
@@ -20,6 +23,7 @@ export default function PokemonList() {
   } = useInfiniteQuery({
     queryKey: ["pokemons"],
     queryFn: retrieveData,
+    staleTime: 1000 * 60 * 5,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage.next) return undefined; // stop fetching when no more
@@ -27,22 +31,48 @@ export default function PokemonList() {
     },
   });
 
+  // If user reached bottom fetch more data
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [fetchNextPage, inView]);
+  }, [inView]);
+
+  // scroll back to the card
+  useEffect(() => {
+    let name = location.state.pokemon;
+    refs.current[name]?.scrollIntoView({
+      behavior: "instant",
+      block: "center",
+    });
+  }, [location.pathname]);
 
   if (isLoading) return <LoadingView />;
 
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
 
+  const items = data?.pages.flatMap((p) => p.results) ?? [];
+
+  const hidden = location.pathname !== "/pokemon" ? "hidden" : "block";
+
   return (
-    <div className="grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-5">
-      {(data?.pages.flatMap((page) => page.results) ?? []).map((pokemon) => (
-        <PokemonCard key={pokemon.name} name={pokemon.name} />
-      ))}
-      <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
-    </div>
+    <>
+      <div
+        className={`${hidden} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
+      >
+        {items.map((item) => (
+          <div
+            key={item.name}
+            ref={(el) => {
+              refs.current[item.name] = el;
+            }}
+          >
+            <PokemonCard name={item.name} />
+          </div>
+        ))}
+        <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
+      </div>
+      <Outlet />
+    </>
   );
 }
