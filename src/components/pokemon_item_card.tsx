@@ -1,16 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { PokemonClient, type Pokemon } from "pokenode-ts";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router";
+import { TypeBadges } from "./type_badges";
+import { getPokemonDetail } from "../api/pokemon_api";
 //TODO stats chart
-//TODO custom type badges style
-//TODO id on top left
-const api = new PokemonClient();
-
-const getPokemonDetail = async (name: string) => {
-  const data: Pokemon = await api.getPokemonByName(name);
-  return data;
-};
 
 export default function PokemonCard({ name }: { name: string }) {
   const { data, error, isLoading } = useQuery({
@@ -18,22 +11,22 @@ export default function PokemonCard({ name }: { name: string }) {
     queryFn: () => getPokemonDetail(name),
   });
 
-  if (isLoading)
+  if (isLoading) {
+    const defaultStyle = "skeleton bg-gray-300 dark:bg-gray-700";
     return (
       <div className="flex w-52 flex-col gap-4">
-        <div className="skeleton h-32 w-full"></div>
-        <div className="skeleton h-4 w-28"></div>
-        <div className="skeleton h-4 w-full"></div>
-        <div className="skeleton h-4 w-full"></div>
+        <div className={`${defaultStyle} h-32 w-full`}></div>
+        <div className={`${defaultStyle} h-8 w-full`}></div>
+        <div className={`${defaultStyle} h-8 w-full`}></div>
       </div>
     );
+  }
   if (error)
     return (
       <div className="grid h-3/4 justify-items-center">
         An error occurred: {error.message}
       </div>
     );
-
   return (
     <Link
       to={`${name}`}
@@ -44,12 +37,16 @@ export default function PokemonCard({ name }: { name: string }) {
       <div className="card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
         <figure className="p-8">
           <div className="indicator rounded-2xl bg-black/5">
-            <div className="indicator-item indicator-center badge badge-primary flex gap-5">
-              <span className="badge">Badge</span>
-              <span className="badge">Badge</span>
+            <div className="indicator-item indicator-center badge flex gap-5 border-0 bg-transparent">
+              {data?.types.map((a) => (
+                <TypeBadges key={a.type.name} type={a.type.name} />
+              ))}
             </div>
-            <span className="indicator-item indicator-bottom indicator-center badge badge-secondary">
-              {data?.name}
+            <span className="indicator-item indicator-bottom indicator-center badge bg-gray-500 p-4 text-lg font-medium text-white capitalize dark:bg-gray-600">
+              {name}
+            </span>
+            <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 font-medium text-gray-300 dark:bg-gray-600">
+              # {data?.id}
             </span>
             <LazyLoadImage
               className="w-64"
