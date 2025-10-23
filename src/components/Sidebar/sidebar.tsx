@@ -7,7 +7,7 @@ export default function Sidebar() {
   let params = useLocation();
   useEffect(() => {
     setSelect(params.state);
-  });
+  }, [params]);
   const items_list1 = ["Home", "Pokemon", "Move", "Ability"];
   const items_list2 = ["Location"];
   const items_list3 = ["Item", "Berry", "Game"];
