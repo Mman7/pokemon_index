@@ -3,12 +3,14 @@ import SidebarItem from "./sidebar_item";
 import { useLocation } from "react-router";
 
 export default function Sidebar() {
-  const [select, setSelect] = useState("Home");
+  const [select, setSelect] = useState<string | null>("home");
   let params = useLocation();
   useEffect(() => {
     setSelect(params.state);
+    console.log(params.state);
   }, [params]);
-  const items_list1 = ["Home", "Pokemon", "Move", "Ability"];
+
+  const items_list1 = ["Pokemon", "Move", "Ability"];
   const items_list2 = ["Location"];
   const items_list3 = ["Item", "Berry", "Game"];
 
@@ -17,6 +19,11 @@ export default function Sidebar() {
   );
   return (
     <ul className="menu bg-base-200 text-base-content min-h-full w-70 p-4 sm:w-80">
+      <SidebarItem
+        title={"Home"}
+        callback={() => setSelect(null)}
+        isSelected={select === null}
+      />
       {items_list1.map((item) => (
         <SidebarItem
           title={item}
