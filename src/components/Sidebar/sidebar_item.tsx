@@ -12,11 +12,11 @@ export default function SidebarItem({
   isSelected,
 }: SidebarItemProps) {
   const selectedStlyle = isSelected
-    ? "font-medium text-white dark:backdrop-brightness-10 backdrop-brightness-20"
+    ? "font-medium text-white dark:backdrop-brightness-10 backdrop-brightness-20 hover:bg-transparent"
     : "text-black hover:backdrop-brightness-150 dark:text-white ";
 
   return (
-    <Link to={`/${title.toLocaleLowerCase()}`}>
+    <Link to={`/${title.toLocaleLowerCase()}`} state={title}>
       <li key={title}>
         <button
           onClick={callback}
