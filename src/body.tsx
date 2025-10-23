@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Sidebar from "./components/Sidebar/sidebar";
 import PokemonList from "./pages/pokemon_list";
 import PokemonDetails from "./pages/pokemon_details_page.tsx/pokemon_details";
@@ -10,9 +10,10 @@ export default function Body() {
       <div className="drawer-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/pokemon" element={<PokemonList />} />
-          <Route path="/pokemon/:name" element={<PokemonDetails />} />
+          <Route path="/home" element={<Navigate to="/" />} />
+          <Route path="/pokemon" element={<PokemonList />}>
+            <Route path=":name" element={<PokemonDetails />} />
+          </Route>
         </Routes>
       </div>
       <div className="drawer-side">
