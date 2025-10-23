@@ -47,11 +47,11 @@ export default function PokemonCard({ name }: { name: string }) {
                 <TypeBadges key={a.type.name} type={a.type.name} />
               ))}
             </div>
-            <span className="indicator-item indicator-bottom indicator-center badge bg-gray-500 p-4 text-lg font-medium text-white capitalize dark:bg-gray-600">
+            <span className="indicator-item indicator-bottom indicator-center badge bg-gray-500 p-3.75 text-base font-medium text-white capitalize dark:bg-gray-600">
               {name}
             </span>
-            <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 p-1.5 font-medium text-gray-300 dark:bg-gray-600">
-              # {data?.id}
+            <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 p-1.5 text-xs font-medium text-gray-300 dark:bg-gray-600">
+              #{data?.id}
             </span>
             <LazyLoadImage
               loading="lazy"
