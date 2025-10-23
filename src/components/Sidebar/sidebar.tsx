@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SidebarItem from "./sidebar_item";
+import { useLocation } from "react-router";
 
 export default function Sidebar() {
   const [select, setSelect] = useState("Home");
+  let params = useLocation();
+  useEffect(() => {
+    setSelect(params.state);
+  });
   const items_list1 = ["Home", "Pokemon", "Move", "Ability"];
   const items_list2 = ["Location"];
   const items_list3 = ["Item", "Berry", "Game"];
+
   const dividedLine = (
     <div className="mx-3 my-1.5 flex items-center border-t border-gray-700" />
   );
