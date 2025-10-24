@@ -1,4 +1,14 @@
-export default function Searchbar() {
+import type { JSX } from "react";
+
+interface SearchbarProps {
+  value: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function Searchbar({
+  value,
+  handleChange,
+}: SearchbarProps): JSX.Element {
   return (
     <label className="input">
       <svg
@@ -17,7 +27,13 @@ export default function Searchbar() {
           <path d="m21 21-4.3-4.3"></path>
         </g>
       </svg>
-      <input type="search" required placeholder="Search" />
+      <input
+        type="text"
+        autoComplete="off"
+        placeholder="Search..."
+        value={value}
+        onChange={handleChange}
+      />
     </label>
   );
 }
