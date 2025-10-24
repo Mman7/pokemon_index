@@ -3,7 +3,7 @@ import SidebarItem from "./sidebar_item";
 import { useLocation } from "react-router";
 
 export default function Sidebar() {
-  const [select, setSelect] = useState<string | null>("home");
+  const [select, setSelect] = useState<string | null>("");
   let params = useLocation();
   useEffect(() => {
     setSelect(params.pathname);

@@ -12,7 +12,7 @@ export default function SidebarItem({
   isSelected,
 }: SidebarItemProps) {
   const selectedStlyle = isSelected
-    ? "font-medium text-white dark:backdrop-brightness-10 backdrop-brightness-20 hover:bg-transparent"
+    ? "font-medium text-white bg-red-600 bg-red-700 "
     : "text-black hover:backdrop-brightness-150 dark:text-white ";
 
   return (
