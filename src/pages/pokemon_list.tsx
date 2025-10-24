@@ -1,6 +1,6 @@
 import PokemonCard from "../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { retrieveData } from "../api/pokemon_api";
 import LoadingView from "../components/loading";
@@ -40,11 +40,13 @@ export default function PokemonList() {
 
   // scroll back to the card
   useEffect(() => {
-    let name = location.state.pokemon;
-    refs.current[name]?.scrollIntoView({
-      behavior: "instant",
-      block: "center",
-    });
+    let name = location.state;
+    if (name !== null) {
+      refs.current[name.pokemon]?.scrollIntoView({
+        behavior: "instant",
+        block: "center",
+      });
+    }
   }, [location.pathname]);
 
   if (isLoading) return <LoadingView />;
