@@ -1,5 +1,11 @@
-export function TypeBadges({ type }: { type: string }) {
-  const defaultStyle = "badge capitalize font-medium p-2.5 text-xs ";
+export function TypeBadges({
+  type,
+  fontSize,
+}: {
+  type: string;
+  fontSize: string;
+}) {
+  const defaultStyle = `badge capitalize font-medium p-3  ${fontSize}`;
   switch (type) {
     case "poison":
       return <div className={`badge-primary ${defaultStyle}`}>{type}</div>;
