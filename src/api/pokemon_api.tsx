@@ -11,7 +11,12 @@ export const retrieveData = async ({
   return data;
 };
 
-export const getPokemonDetail = async (name: string) => {
+export const getPokemonDetailByName = async (name: string) => {
   const data: Pokemon = await api.getPokemonByName(name);
+  return data;
+};
+
+export const getPokemonDetailByID = async (name: number) => {
+  const data: Pokemon = await api.getPokemonById(name);
   return data;
 };
