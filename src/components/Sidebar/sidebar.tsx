@@ -6,8 +6,7 @@ export default function Sidebar() {
   const [select, setSelect] = useState<string | null>("home");
   let params = useLocation();
   useEffect(() => {
-    setSelect(params.state);
-    console.log(params.state);
+    setSelect(params.pathname);
   }, [params]);
 
   const items_list1 = ["Pokemon", "Move", "Ability"];
@@ -22,14 +21,14 @@ export default function Sidebar() {
       <SidebarItem
         title={"Home"}
         callback={() => setSelect(null)}
-        isSelected={select === null}
+        isSelected={select === "/"}
       />
       {items_list1.map((item) => (
         <SidebarItem
           title={item}
           key={item}
           callback={() => setSelect(item)}
-          isSelected={select === item}
+          isSelected={select === `/${item.toLowerCase()}`}
         />
       ))}
       {dividedLine}
@@ -38,7 +37,7 @@ export default function Sidebar() {
           title={item}
           key={item}
           callback={() => setSelect(item)}
-          isSelected={select === item}
+          isSelected={select === `/${item.toLowerCase()}`}
         />
       ))}
       {dividedLine}
@@ -47,7 +46,7 @@ export default function Sidebar() {
           title={item}
           key={item}
           callback={() => setSelect(item)}
-          isSelected={select === item}
+          isSelected={select === `/${item.toLowerCase()}`}
         />
       ))}
     </ul>
