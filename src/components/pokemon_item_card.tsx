@@ -2,14 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router";
 import { TypeBadges } from "./type_badges";
-import { getPokemonDetail } from "../api/pokemon_api";
+import { getPokemonDetailByName } from "../api/pokemon_api";
 
 //TODO stats chart
 
 export default function PokemonCard({ name }: { name: string }) {
   const { data, error, isLoading } = useQuery({
     queryKey: [name],
-    queryFn: () => getPokemonDetail(name),
+    queryFn: () => getPokemonDetailByName(name),
     staleTime: 1000 * 60 * 5,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -44,7 +44,11 @@ export default function PokemonCard({ name }: { name: string }) {
           <div className="indicator rounded-2xl bg-black/5">
             <div className="indicator-item indicator-center badge flex gap-5 border-0 bg-transparent">
               {data?.types.map((a) => (
-                <TypeBadges key={a.type.name} type={a.type.name} />
+                <TypeBadges
+                  fontSize="text-base"
+                  key={a.type.name}
+                  type={a.type.name}
+                />
               ))}
             </div>
             <span className="indicator-item indicator-bottom indicator-center badge bg-gray-500 p-3.75 text-base font-medium text-white capitalize dark:bg-gray-600">
