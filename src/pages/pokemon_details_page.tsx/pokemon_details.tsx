@@ -1,33 +1,49 @@
 import { ArrowLeftFromLine } from "lucide-react";
-import type { Pokemon } from "pokenode-ts";
 import { Link, useLocation } from "react-router";
 import Description from "./description";
+import { Wrapper } from "../../components/wrapper";
+import RadarChart from "../../components/chart";
+import type { Pokemon } from "pokenode-ts";
+import SpiritesShow from "./sprites_show_list";
+
+//TODO add more content
 
 export default function PokemonDetails() {
   const location = useLocation();
-  const data: Pokemon = location.state.pokemon;
+  let state: any = location.state;
+
+  if (state === null) return <div>not found</div>;
+  const data: Pokemon = state.pokemon;
 
   return (
-    <div className="p-6">
-      <Link to="/pokemon" className="btn-wide flex items-center gap-5">
-        <button className="btn btn-wide text-xl">
-          <ArrowLeftFromLine />
-          Pokemon Page
-        </button>
-      </Link>
-      <div className="flex gap-6 p-6">
-        <img
-          className="w-50 rounded-2xl shadow-xl dark:backdrop-brightness-120"
-          src={data?.sprites.front_default ?? ""}
-        />
-        {/* <Description
-          id={data.id}
-          height={data.height}
-          weight={data.weight}
-          name={data.name}
-          baseExperience={data.base_experience}
-        /> */}
+    <Wrapper>
+      <div className="flex flex-col">
+        <Link
+          className="pl-6"
+          to={"/pokemon"}
+          state={{
+            pokemon: data.name,
+          }}
+        >
+          <button className="btn btn-wide text-xl">
+            <ArrowLeftFromLine />
+            Pokemon Page
+          </button>
+        </Link>
+        <div className="flex flex-col gap-10 p-6 md:grid md:grid-cols-2">
+          <figure className="flex flex-col gap-6">
+            <img
+              className="w-full rounded-2xl shadow-xl dark:backdrop-brightness-90"
+              src={data.sprites.front_default ?? ""}
+            />
+          </figure>
+          <Description pokemonDetails={data} />
+          <div className="gap-6 rounded-2xl p-6 shadow-xl backdrop-brightness-90">
+            <RadarChart stats={data.stats} pokemonName={data.name} />
+          </div>
+          <SpiritesShow data={data} />
+        </div>
       </div>
-    </div>
+    </Wrapper>
   );
 }
