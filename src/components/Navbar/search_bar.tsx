@@ -1,16 +1,21 @@
 import type { JSX } from "react";
 
 interface SearchbarProps {
+  isHidden: boolean;
   value: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setInputValue: any;
 }
 
 export default function Searchbar({
+  isHidden,
   value,
-  handleChange,
+  setInputValue,
 }: SearchbarProps): JSX.Element {
+  const handleChange = (e: any) => {
+    setInputValue(e.target.value);
+  };
   return (
-    <label className="input">
+    <label className={`input ${isHidden && "hidden"}`}>
       <svg
         className="h-[1em] opacity-50"
         xmlns="http://www.w3.org/2000/svg"
