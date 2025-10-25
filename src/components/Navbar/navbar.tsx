@@ -22,7 +22,7 @@ export default function Navbar() {
   const isHomePage = location.pathname == "/";
 
   return (
-    <div className="navbar bg-base-100 sticky top-0 shadow-sm">
+    <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
       <div className="navbar-start">
         <label
           htmlFor="my-drawer-3"
