@@ -56,7 +56,9 @@ export default function PokemonCard({
                 />
               ))}
             </div>
-            <span className="indicator-item indicator-bottom indicator-center badge bg-gray-500 p-3.75 text-base font-medium text-white capitalize dark:bg-gray-600">
+            <span
+              className={`${name.length > 9 && "text-xs"} indicator-item indicator-bottom indicator-center badge bg-gray-500 px-3 py-3.5 text-base font-medium text-white capitalize dark:bg-gray-600`}
+            >
               {name}
             </span>
             <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 p-1.5 text-xs font-medium text-gray-300 dark:bg-gray-600">
@@ -64,9 +66,7 @@ export default function PokemonCard({
             </span>
             <LazyLoadImage
               loading="lazy"
-              className="w-64"
-              width="64"
-              height="64"
+              className="w-68"
               alt={data?.name}
               src={data?.sprites.front_default ?? ""}
             />
