@@ -13,7 +13,7 @@ export default function Navbar() {
       navigate("/pokemon", {
         state: { searchData: inputValue },
       });
-    }, 500);
+    }, 600);
     return () => {
       clearTimeout(timeout);
     };
