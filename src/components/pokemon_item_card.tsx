@@ -4,7 +4,13 @@ import { Link } from "react-router";
 import { TypeBadges } from "./type_badges";
 import { getPokemonDetailByName } from "../api/pokemon_api";
 
-export default function PokemonCard({ name }: { name: string }) {
+export default function PokemonCard({
+  name,
+  isSearch = false,
+}: {
+  name: string;
+  isSearch?: boolean | null;
+}) {
   const { data, error, isLoading } = useQuery({
     queryKey: [name],
     queryFn: () => getPokemonDetailByName({ name }),
@@ -22,11 +28,17 @@ export default function PokemonCard({ name }: { name: string }) {
       </div>
     );
   }
+
   if (error)
     return (
       <div className="grid h-3/4 justify-items-center">
         An error occurred: {error.message}
       </div>
+    );
+
+  if (error && isSearch)
+    return (
+      <div className="grid h-3/4 justify-items-center">Pokemon Not Found</div>
     );
 
   return (
