@@ -10,7 +10,7 @@ export default function Description({
   let finalWeight = weight.slice(0, -1);
 
   return (
-    <div className="shadow-x flex flex-col gap-2.75 rounded-2xl p-10 *:text-center md:*:text-start dark:backdrop-brightness-90">
+    <div className="shadow-x flex flex-col gap-5 rounded-2xl p-10 backdrop-brightness-90 *:text-center md:*:text-start dark:backdrop-brightness-130">
       <h1 className="text-2xl font-medium capitalize">
         #{pokemonDetails.id} {pokemonDetails.name}
       </h1>
