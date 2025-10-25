@@ -85,7 +85,9 @@ export default function PokemonList() {
               <PokemonCard name={item.name} />
             </div>
           ))}
-        <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
+        {!search && (
+          <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
+        )}
       </div>
       <Outlet />
     </>
