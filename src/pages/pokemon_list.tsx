@@ -1,17 +1,17 @@
 import PokemonCard from "../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { retrieveData } from "../api/pokemon_api";
+import { getListPokemons } from "../api/pokemon_api";
 import LoadingView from "../components/loading";
 import { Outlet, useLocation } from "react-router";
-
-//TODO finish search functionality
 
 export default function PokemonList() {
   const { ref, inView } = useInView();
   const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const location = useLocation();
+  const [search, setSearch] = useState(null);
+  window.history.replaceState({}, "");
 
   const {
     data,
@@ -22,7 +22,8 @@ export default function PokemonList() {
     error,
   } = useInfiniteQuery({
     queryKey: ["pokemons"],
-    queryFn: retrieveData,
+    queryFn: getListPokemons,
+    retry: 2,
     staleTime: 1000 * 60 * 5,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
@@ -40,14 +41,22 @@ export default function PokemonList() {
 
   // scroll back to the card
   useEffect(() => {
-    let name = location.state;
-    if (name !== null) {
-      refs.current[name.pokemon]?.scrollIntoView({
+    let state = location.state;
+    if (
+      state?.searchData == undefined ||
+      state?.searchData == null ||
+      state?.searchData == ""
+    )
+      setSearch(null);
+
+    if (state && state?.searchData) setSearch(state.searchData);
+    if (state && state.pokemon) {
+      refs.current[state.pokemon]?.scrollIntoView({
         behavior: "instant",
         block: "center",
       });
     }
-  }, [location.pathname]);
+  }, [location.state]);
 
   if (isLoading) return <LoadingView />;
 
@@ -60,18 +69,26 @@ export default function PokemonList() {
   return (
     <>
       <div
-        className={`${hidden} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
+        className={` ${hidden} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
-        {items.map((item) => (
-          <div
-            key={item.name}
-            ref={(el) => {
-              refs.current[item.name] = el;
-            }}
-          >
-            <PokemonCard name={item.name} />
+        {search && (
+          <div className={``}>
+            <PokemonCard name={search} isSearch={search} />
           </div>
-        ))}
+        )}
+
+        {!search &&
+          items.map((item) => (
+            <div
+              className={`${search && "hidden"}`}
+              key={item.name}
+              ref={(el) => {
+                refs.current[item.name] = el;
+              }}
+            >
+              <PokemonCard name={item.name} isSearch={search} />
+            </div>
+          ))}
         <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
       </div>
       <Outlet />
