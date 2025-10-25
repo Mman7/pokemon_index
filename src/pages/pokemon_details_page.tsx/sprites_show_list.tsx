@@ -7,34 +7,40 @@ export default function SpiritesShow({ data }: { data: Pokemon }) {
   return (
     <div className="grid-row-2 flex gap-4 md:grid md:grid-cols-2">
       <SpiritesItem
+        className="bg-primary/70 dark:bg-primary/30"
         src={data.sprites.front_default ?? ""}
         alt={`${data.name}-front`}
       />
       <SpiritesItem
+        className="bg-primary/70 dark:bg-primary/30"
         src={data.sprites.back_default ?? ""}
         alt={`${data.name}-back`}
       />
 
       {female && (
         <SpiritesItem
+          className="bg-secondary/70 dark:bg-secondary/30"
           src={data.sprites.front_female ?? ""}
           alt={`${data.name}-front-female`}
         />
       )}
       {female && (
         <SpiritesItem
+          className="bg-secondary/70 dark:bg-secondary/30"
           src={data.sprites.back_female ?? ""}
           alt={`${data.name}-front-female-shiny`}
         />
       )}
       {shiny && (
         <SpiritesItem
+          className="bg-accent/70 dark:bg-accent/30"
           src={data.sprites.front_shiny ?? ""}
           alt={`${data.name}-front-female-shiny`}
         />
       )}
       {shiny && (
         <SpiritesItem
+          className="bg-accent/70 dark:bg-accent/30"
           src={data.sprites.back_shiny ?? ""}
           alt={`${data.name}-back-female-shiny`}
         />
@@ -43,9 +49,19 @@ export default function SpiritesShow({ data }: { data: Pokemon }) {
   );
 }
 
-function SpiritesItem({ src, alt }: { src: string; alt: string }) {
+function SpiritesItem({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+}) {
   return (
-    <div className="flex rounded-2xl p-4 shadow backdrop-brightness-90">
+    <div
+      className={`flex rounded-2xl p-4 shadow-xl backdrop-brightness-90 ${className}`}
+    >
       <img className="w-3xs" src={src} alt={alt} />
     </div>
   );

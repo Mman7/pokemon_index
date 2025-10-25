@@ -33,12 +33,12 @@ export default function PokemonDetails() {
         <div className="flex flex-col gap-12 p-6 md:grid md:grid-cols-2">
           <figure className="flex flex-col items-center gap-6">
             <img
-              className="w-full rounded-2xl shadow-xl dark:backdrop-brightness-90"
+              className="w-full rounded-2xl shadow-xl backdrop-brightness-95 dark:backdrop-brightness-90"
               src={data.sprites.front_default ?? ""}
             />
           </figure>
           <Description pokemonDetails={data} />
-          <div className="w-full gap-6 rounded-2xl p-6 shadow-xl backdrop-brightness-90">
+          <div className="w-full gap-6 rounded-2xl p-6 shadow-xl backdrop-brightness-95">
             <RadarChart stats={data.stats} pokemonName={data.name} />
           </div>
           <SpiritesShow data={data} />
