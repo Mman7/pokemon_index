@@ -4,17 +4,14 @@ import { Link } from "react-router";
 import { TypeBadges } from "./type_badges";
 import { getPokemonDetailByName } from "../api/pokemon_api";
 
-//TODO stats chart
-
 export default function PokemonCard({ name }: { name: string }) {
   const { data, error, isLoading } = useQuery({
     queryKey: [name],
-    queryFn: () => getPokemonDetailByName(name),
+    queryFn: () => getPokemonDetailByName({ name }),
     staleTime: 1000 * 60 * 5,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-
   if (isLoading) {
     const defaultStyle = "skeleton bg-gray-300 dark:bg-gray-700";
     return (
