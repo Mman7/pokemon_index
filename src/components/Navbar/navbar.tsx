@@ -19,8 +19,10 @@ export default function Navbar() {
     };
   }, [inputValue]);
 
+  const isHomePage = location.pathname == "/";
+
   return (
-    <div className="navbar bg-base-100 sticky top-0 z-50 shadow-sm">
+    <div className="navbar bg-base-100 sticky top-0 shadow-sm">
       <div className="navbar-start">
         <label
           htmlFor="my-drawer-3"
@@ -42,10 +44,15 @@ export default function Navbar() {
           </svg>
         </label>
         <div className="ml-4 hidden items-center md:block">
-          <img className="w-60" src={logo} alt="Pokemon Index" />
+          <img className="w-50" src={logo} alt="Pokemon Index" />
         </div>
       </div>
       <div className="navbar-center">
+        <div
+          className={`ml-4 items-center ${isHomePage ? "block md:hidden" : "hidden"} `}
+        >
+          <img className="w-50" src={logo} alt="Pokemon Index" />
+        </div>
         <Searchbar
           value={inputValue}
           setInputValue={setInputValue}
