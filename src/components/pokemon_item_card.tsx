@@ -6,7 +6,6 @@ import { getPokemonDetailByName } from "../api/pokemon_api";
 
 export default function PokemonCard({
   name,
-  isSearch = false,
 }: {
   name: string;
   isSearch?: boolean | null;
@@ -29,17 +28,14 @@ export default function PokemonCard({
     );
   }
 
-  if (error)
+  // pokemon not found
+  if (error && error.message == "Request failed with status code 404")
     return (
-      <div className="grid h-3/4 justify-items-center">
-        An error occurred: {error.message}
-      </div>
+      <div className="grid h-3/4 justify-items-center">Pokemon not found</div>
     );
 
-  if (error && isSearch)
-    return (
-      <div className="grid h-3/4 justify-items-center">Pokemon Not Found</div>
-    );
+  if (error)
+    return <div className="grid h-3/4 justify-items-center">error.message</div>;
 
   return (
     <Link

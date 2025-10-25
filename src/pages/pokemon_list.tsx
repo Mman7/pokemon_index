@@ -71,11 +71,7 @@ export default function PokemonList() {
       <div
         className={` ${hidden} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
-        {search && (
-          <div className={``}>
-            <PokemonCard name={search} isSearch={search} />
-          </div>
-        )}
+        {search && <PokemonCard name={search} />}
 
         {!search &&
           items.map((item) => (
@@ -86,7 +82,7 @@ export default function PokemonList() {
                 refs.current[item.name] = el;
               }}
             >
-              <PokemonCard name={item.name} isSearch={search} />
+              <PokemonCard name={item.name} />
             </div>
           ))}
         <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
