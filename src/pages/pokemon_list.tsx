@@ -11,7 +11,6 @@ export default function PokemonList() {
   const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const location = useLocation();
   const [search, setSearch] = useState(null);
-  window.history.replaceState({}, "");
 
   const {
     data,
