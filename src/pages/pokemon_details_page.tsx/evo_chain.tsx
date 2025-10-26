@@ -1,0 +1,57 @@
+import { useQuery } from "@tanstack/react-query";
+import {
+  getEvoChainsById,
+  getPokemonDetailByName,
+} from "../../api/pokemon_api";
+import type { EvolutionChain } from "pokenode-ts";
+import { ChevronDown, ChevronRight, Link } from "lucide-react";
+import PokemonCard from "../../components/pokemon_item_card";
+import { Fragment } from "react/jsx-runtime";
+
+//TODO finish this
+
+export default function EvoChain({
+  name,
+  EvoChainId,
+}: {
+  name: string;
+  EvoChainId: number;
+}) {
+  const { data: chainData, isLoading: isLoading1 } = useQuery<EvolutionChain>({
+    queryKey: [`${name}Evo`, EvoChainId],
+    queryFn: () => getEvoChainsById({ id: EvoChainId }),
+    enabled: EvoChainId !== 0,
+  });
+
+  let current = chainData?.chain;
+  const evolutions: any[] = [];
+  while (current) {
+    // push the current Pokémon's name
+    if (current.species?.name) evolutions.push(current.species.name);
+    // move to the next evolution (first branch)
+    current = current.evolves_to?.[0];
+  }
+  if (isLoading1) <div> Loading...</div>;
+  return (
+    <div>
+      <h1 className="text-center text-2xl font-bold lg:text-start">
+        Evolution
+      </h1>
+      <div className="flex w-full flex-col items-center justify-between pt-6 lg:flex-row">
+        {evolutions.map((pokemonEvo, index) => (
+          <Fragment key={index}>
+            <PokemonCard
+              key={pokemonEvo}
+              name={pokemonEvo}
+              pokemonClassName="w-34 lg:w-38"
+            />
+            <div className="last:hidden">
+              <ChevronRight className={`hidden size-10 lg:block`} />
+              <ChevronDown className={`size-10 lg:hidden`} />
+            </div>
+          </Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
