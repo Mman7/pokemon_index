@@ -1,6 +1,12 @@
-import { PokemonClient, type Pokemon } from "pokenode-ts";
+import {
+  PokemonClient,
+  EvolutionClient,
+  type Pokemon,
+  type EvolutionChain,
+} from "pokenode-ts";
 
 const api = new PokemonClient();
+const evo = new EvolutionClient();
 
 export const getListPokemons = async ({
   pageParam = 0,
@@ -20,3 +26,20 @@ export const getPokemonDetailByID = async ({ id }: { id: number }) => {
   const data: Pokemon = await api.getPokemonById(id);
   return data;
 };
+
+export const getPokemonSpeciesByName = async ({ name }: { name: string }) => {
+  const data = await api.getPokemonSpeciesByName(name);
+  return data;
+};
+
+export const getEvoChainsById = async ({ id }: { id: number }) => {
+  const data = await evo.getEvolutionChainById(id);
+  return data;
+};
+
+// export const getEvoChainArrayById = async ({ id }: { id: number }) => {
+//   const results: EvolutionChain[] = [];
+//   const data: EvolutionChain = await getEvoChainsById({ id });
+//   results.push(data);
+//   return results;
+// };
