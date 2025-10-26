@@ -10,13 +10,18 @@ export default function PokemonCard({
   name: string;
   isSearch?: boolean | null;
 }) {
-  const { data, error, isLoading } = useQuery({
+  const {
+    data: baseData,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: [name],
     queryFn: () => getPokemonDetailByName({ name }),
     staleTime: 1000 * 60 * 5,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
+
   if (isLoading) {
     const defaultStyle = "skeleton bg-gray-300 dark:bg-gray-700";
     return (
@@ -28,7 +33,6 @@ export default function PokemonCard({
     );
   }
 
-  // pokemon not found
   if (error && error.message == "Request failed with status code 404")
     return (
       <div className="grid h-3/4 justify-items-center">Pokemon not found</div>
@@ -41,14 +45,14 @@ export default function PokemonCard({
     <Link
       to={`${name}`}
       state={{
-        pokemon: data,
+        pokemon: baseData,
       }}
     >
       <div className="card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
         <figure className="p-8">
           <div className="indicator rounded-2xl bg-black/5">
             <div className="indicator-item indicator-center badge flex gap-5 border-0 bg-transparent">
-              {data?.types.map((a) => (
+              {baseData?.types.map((a) => (
                 <TypeBadges
                   fontSize="text-base"
                   key={a.type.name}
@@ -57,18 +61,18 @@ export default function PokemonCard({
               ))}
             </div>
             <span
-              className={`${name.length > 9 && "text-xs"} indicator-item indicator-bottom indicator-center badge bg-gray-500 px-3 py-3.5 text-base font-medium text-white capitalize dark:bg-gray-600`}
+              className={`${name.length > 10 && "text-xs"} indicator-item indicator-bottom indicator-center badge bg-gray-500 px-3 py-3.5 text-base font-medium text-white capitalize dark:bg-gray-600`}
             >
               {name}
             </span>
             <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 p-1.5 text-xs font-medium text-gray-300 dark:bg-gray-600">
-              #{data?.id}
+              #{baseData?.id}
             </span>
             <LazyLoadImage
               loading="lazy"
               className="w-68"
-              alt={data?.name}
-              src={data?.sprites.front_default ?? ""}
+              alt={baseData?.name}
+              src={baseData?.sprites.front_default ?? ""}
             />
           </div>
         </figure>
