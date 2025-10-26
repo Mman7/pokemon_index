@@ -6,9 +6,11 @@ import { getPokemonDetailByName } from "../api/pokemon_api";
 
 export default function PokemonCard({
   name,
+  pokemonClassName,
 }: {
   name: string;
   isSearch?: boolean | null;
+  pokemonClassName: string;
 }) {
   const {
     data: baseData,
@@ -43,7 +45,7 @@ export default function PokemonCard({
 
   return (
     <Link
-      to={`${name}`}
+      to={`/pokemon/${name}`}
       state={{
         pokemon: baseData,
       }}
@@ -70,7 +72,7 @@ export default function PokemonCard({
             </span>
             <LazyLoadImage
               loading="lazy"
-              className="w-68"
+              className={`${pokemonClassName}`}
               alt={baseData?.name}
               src={baseData?.sprites.front_default ?? ""}
             />
