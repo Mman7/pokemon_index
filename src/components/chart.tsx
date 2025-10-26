@@ -19,7 +19,7 @@ ChartJS.register(
   Legend,
 );
 
-let defaultChartLineColor = "lightblue";
+let defaultChartLineColor = "#1AEEF4";
 let textColor = "black";
 
 if (
@@ -107,7 +107,7 @@ export default function RadarChart({
           color: textColor, // category labels
         },
         ticks: {
-          color: defaultChartLineColor, // numeric labels (0–100)
+          color: textColor, // numeric labels (0–100)
           backdropColor: "transparent", // no gray boxes behind numbers
         },
       },
@@ -115,7 +115,7 @@ export default function RadarChart({
   };
 
   return (
-    <div>
+    <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-95">
       <h1 className="text-2xl font-bold">Stats</h1>
       <Radar options={options} data={dataset} />
     </div>
