@@ -1,14 +1,17 @@
 import Searchbar from "./search_bar";
 import logo from "../../assets/logo.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 export default function Navbar() {
   const [inputValue, setInputValue] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
+  const isPokemonPage = location.pathname === "/pokemon";
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!isPokemonPage) return;
     const timeout = setTimeout(() => {
       navigate("/pokemon", {
         state: { searchData: inputValue },
@@ -18,8 +21,6 @@ export default function Navbar() {
       clearTimeout(timeout);
     };
   }, [inputValue]);
-
-  const isHomePage = location.pathname == "/";
 
   return (
     <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
