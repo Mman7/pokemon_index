@@ -31,3 +31,8 @@ export const getEvoChainsById = async ({ id }: { id: number }) => {
   const data = await evo.getEvolutionChainById(id);
   return data;
 };
+
+export const getAllPokemonNames = async () => {
+  const data = await api.listPokemons(0, 100000);
+  return data;
+};
