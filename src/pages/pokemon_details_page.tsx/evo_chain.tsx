@@ -34,20 +34,19 @@ export default function EvoChain({
   if (isLoading1) <div> Loading...</div>;
   return (
     <div>
-      <h1 className="text-center text-2xl font-bold lg:text-start">
-        Evolution
-      </h1>
-      <div className="flex w-full flex-col items-center justify-between pt-6 lg:flex-row">
+      <h1 className="text-center text-2xl font-bold">Evolution</h1>
+      <div className="flex w-full flex-col items-center justify-center pt-6 lg:flex-row">
         {evolutions.map((pokemonEvo, index) => (
           <Fragment key={index}>
             <PokemonCard
+              pokemonItemClassName={`${pokemonEvo == name && "border-1"}`}
               key={pokemonEvo}
               name={pokemonEvo}
-              pokemonClassName="w-34 lg:w-38"
+              pokemonImgClassName="w-34 lg:w-38"
             />
             <div className="last:hidden">
-              <ChevronRight className={`hidden size-10 lg:block`} />
-              <ChevronDown className={`size-10 lg:hidden`} />
+              <ChevronRight className={`m-6 hidden size-10 lg:block`} />
+              <ChevronDown className={`m-6 size-10 lg:hidden`} />
             </div>
           </Fragment>
         ))}
