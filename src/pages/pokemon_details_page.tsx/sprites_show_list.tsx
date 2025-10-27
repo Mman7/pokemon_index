@@ -3,10 +3,11 @@ import type { Pokemon } from "pokenode-ts";
 export default function SpiritesShow({ data }: { data: Pokemon }) {
   const female: boolean = data.sprites.front_female !== null;
   const shiny: boolean = data.sprites.back_shiny !== null;
+
   return (
     <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-95">
       <h1 className="mb-3 text-2xl font-bold">Variants</h1>
-      <div className="md:grid-row-2 flex flex-wrap items-center justify-center gap-4 md:grid md:grid-cols-2">
+      <div className="grid-row-2 grid grid-cols-2 items-center justify-center gap-4">
         <SpiritesItem
           className="bg-primary/70 dark:bg-primary/30"
           src={data.sprites.front_default ?? null}
@@ -14,7 +15,7 @@ export default function SpiritesShow({ data }: { data: Pokemon }) {
         />
         <SpiritesItem
           className="bg-primary/70 dark:bg-primary/30"
-          src={data.sprites.back_default ?? null}
+          src={data.sprites.back_default}
           alt={`${data.name}-back`}
         />
 
@@ -62,9 +63,9 @@ function SpiritesItem({
 }) {
   return (
     <div
-      className={`${src == "" && "hidden"} flex rounded-2xl p-4 shadow-xl backdrop-brightness-90 ${className}`}
+      className={`${src == "" || (src == null && "hidden")} flex rounded-2xl p-4 shadow-xl backdrop-brightness-90 ${className}`}
     >
-      <img className="w-3xs" src={src === null ? undefined : src} alt={alt} />
+      <img className="w-3xs" src={src == null ? undefined : src} alt={alt} />
     </div>
   );
 }
