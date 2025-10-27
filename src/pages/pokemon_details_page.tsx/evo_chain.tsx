@@ -32,8 +32,9 @@ export default function EvoChain({
     current = current.evolves_to?.[0];
   }
   if (isLoading1) <div> Loading...</div>;
+
   return (
-    <div>
+    <div className={`${evolutions.length == 0 && "hidden"} `}>
       <h1 className="text-center text-2xl font-bold">Evolution</h1>
       <div className="flex w-full flex-col items-center justify-center pt-6 lg:flex-row">
         {evolutions.map((pokemonEvo, index) => (
