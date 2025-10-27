@@ -4,10 +4,10 @@ import { useLocation } from "react-router";
 
 export default function Sidebar() {
   const [select, setSelect] = useState<string | null>("");
-  let params = useLocation();
+  let location = useLocation();
   useEffect(() => {
-    setSelect(params.pathname);
-  }, [params]);
+    setSelect(location.pathname);
+  }, [location]);
 
   const items_list1 = ["Pokemon", "Move", "Ability"];
   const items_list2 = ["Location"];
