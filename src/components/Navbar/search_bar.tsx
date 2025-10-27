@@ -1,19 +1,27 @@
-import type { JSX } from "react";
+import { type JSX } from "react";
 
 interface SearchbarProps {
   isHidden: boolean;
   value: string;
   setInputValue: any;
+  setFocus: Function;
 }
 
 export default function Searchbar({
   isHidden,
   value,
   setInputValue,
+  setFocus,
 }: SearchbarProps): JSX.Element {
   const handleChange = (e: any) => {
     setInputValue(e.target.value);
   };
+
+  const onFocus = () => setFocus(true);
+  const onBlur = () => {
+    setTimeout(() => setFocus(false));
+  };
+
   return (
     <label className={`input ${isHidden && "hidden"}`}>
       <svg
@@ -33,9 +41,11 @@ export default function Searchbar({
         </g>
       </svg>
       <input
+        onFocus={onFocus}
+        onBlur={onBlur}
         type="text"
         autoComplete="off"
-        placeholder="Search..."
+        placeholder="Search ID with #"
         value={value}
         onChange={handleChange}
       />
