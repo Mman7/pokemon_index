@@ -1,5 +1,3 @@
-// import { useState } from 'react'
-
 import Navbar from "./components/Navbar/navbar";
 import Body from "./body";
 
