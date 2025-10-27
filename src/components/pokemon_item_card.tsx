@@ -6,11 +6,13 @@ import { getPokemonDetailByName } from "../api/pokemon_api";
 
 export default function PokemonCard({
   name,
-  pokemonClassName,
+  pokemonImgClassName,
+  pokemonItemClassName,
 }: {
   name: string;
   isSearch?: boolean | null;
-  pokemonClassName: string;
+  pokemonImgClassName: string;
+  pokemonItemClassName?: string;
 }) {
   const {
     data: baseData,
@@ -50,7 +52,9 @@ export default function PokemonCard({
         pokemon: baseData,
       }}
     >
-      <div className="card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
+      <div
+        className={`${pokemonItemClassName} card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140`}
+      >
         <figure className="p-8">
           <div className="indicator rounded-2xl bg-black/5">
             <div className="indicator-item indicator-center badge flex gap-5 border-0 bg-transparent">
@@ -72,7 +76,7 @@ export default function PokemonCard({
             </span>
             <LazyLoadImage
               loading="lazy"
-              className={`${pokemonClassName}`}
+              className={`${pokemonImgClassName}`}
               alt={baseData?.name}
               src={baseData?.sprites.front_default ?? ""}
             />
