@@ -41,7 +41,7 @@ export default function PokemonDetails() {
       <div className="flex flex-col gap-6 p-6">
         <button
           className="btn btn-wide text-xl"
-          onClick={() => nav("..", { state: { pokemon: data.name } })}
+          onClick={() => nav("..", { state: { lastSeen: data.name } })}
         >
           <ArrowLeftFromLine />
           Pokemon Page
@@ -60,7 +60,6 @@ export default function PokemonDetails() {
           )}
 
           <RadarChart stats={data.stats} pokemonName={data.name} />
-
           <SpiritesShow data={data} />
         </div>
         <EvoChain name={data.name} EvoChainId={getEvochainId()} />
@@ -72,19 +71,18 @@ export default function PokemonDetails() {
 export function DescriptionSkeleton() {
   return (
     <div className="shadow-x flex flex-col gap-3.5 rounded-2xl px-10 py-6 *:items-center *:text-center md:*:items-start md:*:text-start dark:backdrop-brightness-130">
-      <div className="skeleton h-8 w-28"></div>
-      <div className="skeleton h-8 w-full"></div>
-      <div className="skeleton h-8 w-28"></div>
-      <div className="skeleton h-8 w-28"></div>
-      <div className="skeleton h-8 w-18"></div>
+      <div className="skeleton h-8 w-28" />
+      <div className="skeleton h-8 w-full" />
+      <div className="skeleton h-8 w-28" />
+      <div className="skeleton h-8 w-28" />
       <div className="flex flex-row flex-wrap gap-3">
-        <div className="skeleton h-8 w-28"></div>
-        <div className="skeleton h-8 w-28"></div>
+        <div className="skeleton h-8 w-28" />
+        <div className="skeleton h-8 w-28" />
       </div>
-      <div className="skeleton h-8 w-18"></div>
+      <div className="skeleton h-8 w-18" />
       <div className="flex flex-row flex-wrap gap-3">
-        <div className="skeleton h-8 w-14"></div>
-        <div className="skeleton h-8 w-14"></div>
+        <div className="skeleton h-8 w-14" />
+        <div className="skeleton h-8 w-14" />
       </div>
     </div>
   );
