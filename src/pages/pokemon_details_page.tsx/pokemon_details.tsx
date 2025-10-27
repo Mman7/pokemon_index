@@ -14,11 +14,7 @@ export default function PokemonDetails() {
   const nav = useNavigate();
   let state: any = location.state;
   const data: Pokemon = state.pokemon;
-  const {
-    data: specieData,
-    error,
-    isLoading,
-  } = useQuery({
+  const { data: specieData, isLoading } = useQuery({
     queryKey: [`${data.name}Specie`],
     queryFn: () => getPokemonSpeciesByName({ name: data.name }),
     staleTime: 1000 * 60 * 5,
@@ -27,21 +23,20 @@ export default function PokemonDetails() {
   });
 
   // EvoChainId and pokemonId is not the same
-  const getEvochainId = () => {
-    const split =
-      specieData?.evolution_chain.url.toString().split("/")[6] ?? "0";
-    return parseInt(split);
-  };
+  const getEvochainId = () =>
+    parseInt(specieData?.evolution_chain.url.toString().split("/")[6] ?? "0");
 
   if (state === null) return <div>not found</div>;
-  if (error) return <div>Error</div>;
+  // if (error) return <div>Error</div>;
 
   return (
     <Wrapper>
       <div className="flex flex-col gap-6 p-6">
         <button
           className="btn btn-wide text-xl"
-          onClick={() => nav("..", { state: { lastSeen: data.name } })}
+          onClick={() =>
+            nav("..", { state: { ...state, lastSeen: data.name } })
+          }
         >
           <ArrowLeftFromLine />
           Pokemon Page
