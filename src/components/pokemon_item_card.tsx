@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { TypeBadges } from "./type_badges";
 import { getPokemonDetailByName } from "../api/pokemon_api";
 
@@ -14,6 +14,7 @@ export default function PokemonCard({
   pokemonImgClassName: string;
   pokemonItemClassName?: string;
 }) {
+  const location = useLocation();
   const {
     data: baseData,
     error,
@@ -44,11 +45,11 @@ export default function PokemonCard({
 
   if (error)
     return <div className="grid h-3/4 justify-items-center">error.message</div>;
-
   return (
     <Link
       to={`/pokemon/${name}`}
       state={{
+        ...location.state,
         pokemon: baseData,
       }}
     >
