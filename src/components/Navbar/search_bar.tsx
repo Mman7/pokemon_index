@@ -45,7 +45,7 @@ export default function Searchbar({
         onBlur={onBlur}
         type="text"
         autoComplete="off"
-        placeholder="Search ID with #"
+        placeholder="Search..."
         value={value}
         onChange={handleChange}
       />
