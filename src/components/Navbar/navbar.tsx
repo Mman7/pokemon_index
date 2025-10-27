@@ -2,30 +2,60 @@ import Searchbar from "./search_bar";
 import logo from "../../assets/logo.svg";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import { getAllPokemonNames } from "../../api/pokemon_api";
+import { useQuery } from "@tanstack/react-query";
+import type { NamedAPIResource, NamedAPIResourceList } from "pokenode-ts";
+
+const splitIdFromLink = (link: string): string => {
+  return link.split("/")[6];
+};
 
 export default function Navbar() {
   const [inputValue, setInputValue] = useState("");
+  const [isFocus, setFocus] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
   const isPokemonPage = location.pathname === "/pokemon";
+  const [results, setResults] = useState<NamedAPIResourceList | undefined>(
+    undefined,
+  );
 
-  const checkInputValueValid = (value: string): string => {
-    const newString = value.replaceAll(" ", "");
-    return newString;
-  };
+  const { data: PokemonNames } = useQuery({
+    queryKey: ["all"],
+    queryFn: getAllPokemonNames,
+  });
 
   useEffect(() => {
-    if (isPokemonPage) {
-      const timeout = setTimeout(() => {
-        navigate("/pokemon", {
-          state: { searchData: checkInputValueValid(inputValue) },
-        });
-      }, 600);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (!isPokemonPage || !PokemonNames) return;
+    if (inputValue == "") {
+      setResults(undefined);
+      navigate("/pokemon", {
+        state: { ...location.state, searchData: [], searchInput: "" },
+      });
+      return;
     }
+
+    // Handle search
+    const timeout = setTimeout(() => {
+      if (!isPokemonPage) return;
+      const filterList = PokemonNames?.results.filter((p: NamedAPIResource) =>
+        p.name.toLowerCase().includes(inputValue.toLowerCase()),
+      );
+      if (inputValue !== "") {
+        navigate("/pokemon", {
+          state: {
+            ...location.state,
+            searchData: filterList.slice(0, 10),
+            searchInput: inputValue,
+          },
+        });
+      }
+      setResults({ ...PokemonNames, results: filterList.slice(0, 10) });
+    }, 400);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [inputValue]);
 
   return (
@@ -60,11 +90,35 @@ export default function Navbar() {
         >
           <img className="w-50" src={logo} alt="Pokemon Index" />
         </div>
-        <Searchbar
-          value={inputValue}
-          setInputValue={setInputValue}
-          isHidden={location.pathname !== "/pokemon"}
-        />
+        <div className="relative">
+          <Searchbar
+            setFocus={setFocus}
+            value={inputValue}
+            setInputValue={setInputValue}
+            isHidden={location.pathname !== "/pokemon"}
+          />
+          <div
+            id="search-results"
+            className={` ${inputValue !== "" ? "block" : "hidden"} bg-base-100 absolute z-10 mt-1 w-full rounded-lg text-black capitalize shadow-lg dark:text-white`}
+          >
+            <ul
+              className={`${!isFocus && "hidden"} divide-yp-1 backdrop-brightness-140`}
+            >
+              {results?.results.map((pokemon, index) => (
+                <li
+                  key={index}
+                  onClick={() => setInputValue(pokemon.name)}
+                  className="cursor-pointer rounded-md p-2 capitalize transition hover:bg-red-700 active:bg-red-800"
+                >
+                  <span className="text-gray-400">
+                    #{splitIdFromLink(pokemon.url)}
+                  </span>{" "}
+                  {pokemon.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="navbar-end"></div>
     </div>
