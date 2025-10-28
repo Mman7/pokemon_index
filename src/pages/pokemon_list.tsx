@@ -48,7 +48,6 @@ export default function PokemonList() {
       setSearchData([]);
     if (state && state.searchData) setSearchData(state.searchData);
     if (state && state.lastSeen) {
-      console.log(state.lastSeen);
       refs.current[state.lastSeen]?.scrollIntoView({
         behavior: "instant",
         block: "center",
