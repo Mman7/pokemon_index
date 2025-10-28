@@ -1,4 +1,4 @@
-import { ArrowLeftFromLine } from "lucide-react";
+import { ArrowLeftFromLine, Volume1 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 import Description from "./description";
 import { Wrapper } from "../../components/wrapper";
@@ -8,13 +8,14 @@ import SpiritesShow from "./sprites_show_list";
 import EvoChain from "./evo_chain";
 import { getPokemonSpeciesByName } from "../../api/pokemon_api";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 
 export default function PokemonDetails() {
   const location = useLocation();
   const nav = useNavigate();
   let state: any = location.state;
-  const data: Pokemon = state.pokemon;
-  const { data: specieData, isLoading } = useQuery({
+  const data: any = state.pokemon;
+  const { data: specieData } = useQuery({
     queryKey: [`${data.name}Specie`],
     queryFn: () => getPokemonSpeciesByName({ name: data.name }),
     staleTime: 1000 * 60 * 5,
@@ -26,8 +27,16 @@ export default function PokemonDetails() {
   const getEvochainId = () =>
     parseInt(specieData?.evolution_chain.url.toString().split("/")[6] ?? "0");
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playSound = () => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.07;
+      audioRef.current.play();
+    }
+  };
+
   if (state === null) return <div>not found</div>;
-  // if (error) return <div>Error</div>;
 
   return (
     <Wrapper>
@@ -42,17 +51,21 @@ export default function PokemonDetails() {
           Pokemon Page
         </button>
         <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
-          <figure className="flex w-full flex-col items-center gap-6 rounded-2xl p-20 shadow-xl backdrop-brightness-150 dark:backdrop-brightness-120">
-            <img
-              className="w-full rounded-2xl bg-black/10"
-              src={data.sprites.front_default ?? ""}
-            />
+          <figure className="flex w-full flex-col items-center justify-center rounded-2xl p-6 shadow-xl backdrop-brightness-150 dark:backdrop-brightness-120">
+            <div className="indicator">
+              <audio ref={audioRef} src={data.cries.latest} />
+              <span
+                onClick={() => playSound()}
+                className="indicator-item indicator-start indicator-bottom badge badge-primary px-1.75 py-3.5 pr-1 hover:cursor-pointer"
+              >
+                <Volume1 />
+              </span>
+              <div className="grid w-full place-items-center rounded-xl bg-black/10">
+                <img src={data.sprites.front_default ?? ""} className="w-64" />
+              </div>
+            </div>
           </figure>
-          {isLoading ? (
-            <DescriptionSkeleton />
-          ) : (
-            <Description pokemonDetails={data} speciesDetails={specieData} />
-          )}
+          <Description pokemonDetails={data} speciesDetails={specieData} />
 
           <RadarChart stats={data.stats} pokemonName={data.name} />
           <SpiritesShow data={data} />
@@ -81,4 +94,8 @@ export function DescriptionSkeleton() {
       </div>
     </div>
   );
+}
+
+export function PlaySound() {
+  return <div>PlaySound</div>;
 }
