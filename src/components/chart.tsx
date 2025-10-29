@@ -115,8 +115,8 @@ export default function RadarChart({
   };
 
   return (
-    <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-95">
-      <h1 className="text-2xl font-bold">Stats</h1>
+    <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-120">
+      <h1 className="text-center text-2xl font-bold md:text-start">Stats</h1>
       <Radar options={options} data={dataset} />
     </div>
   );

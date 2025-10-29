@@ -5,8 +5,10 @@ export default function SpiritesShow({ data }: { data: Pokemon }) {
   const shiny: boolean = data.sprites.back_shiny !== null;
 
   return (
-    <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-95">
-      <h1 className="mb-3 text-2xl font-bold">Variants</h1>
+    <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-120">
+      <h1 className="mb-3 text-center text-2xl font-bold md:text-start">
+        Variants
+      </h1>
       <div className="grid-row-2 grid grid-cols-2 items-center justify-center gap-4">
         <SpiritesItem
           className="bg-primary/70 dark:bg-primary/30"

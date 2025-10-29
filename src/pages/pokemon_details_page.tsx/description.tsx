@@ -12,11 +12,11 @@ export default function Description({
   let finalWeight = weight.slice(0, -1);
 
   return (
-    <div className="shadow-x flex flex-col gap-3.5 rounded-2xl px-10 py-6 *:items-center *:text-center md:*:items-start md:*:text-start dark:backdrop-brightness-130">
+    <div className="flex w-72 flex-col gap-3.5 rounded-2xl *:items-center *:text-center md:w-1/2 md:*:items-start md:*:text-start">
       <h1 className="text-2xl font-bold capitalize">
         #{pokemonDetails.id} {pokemonDetails.name}
       </h1>
-      <h2 className="hidden tracking-tight text-gray-500 xl:block dark:text-gray-300">
+      <h2 className="block tracking-tight text-gray-500 dark:text-gray-300">
         {speciesDetails?.flavor_text_entries?.[6]?.flavor_text ?? ""}
       </h2>
       <div className="flex flex-col gap-1 font-medium text-gray-600 *:text-2xl dark:text-gray-300">

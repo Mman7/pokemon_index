@@ -31,7 +31,7 @@ export default function PokemonDetails() {
 
   const playSound = () => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.07;
+      audioRef.current.volume = 0.2;
       audioRef.current.play();
     }
   };
@@ -51,22 +51,24 @@ export default function PokemonDetails() {
           Pokemon Page
         </button>
         <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
-          <figure className="flex w-full flex-col items-center justify-center rounded-2xl p-6 shadow-xl backdrop-brightness-150 dark:backdrop-brightness-120">
-            <div className="indicator">
-              <audio ref={audioRef} src={data.cries.latest} />
-              <span
-                onClick={() => playSound()}
-                className="indicator-item indicator-start indicator-bottom badge badge-primary px-1.75 py-3.5 pr-1 hover:cursor-pointer"
-              >
-                <Volume1 />
-              </span>
-              <div className="grid w-full place-items-center rounded-xl bg-black/10">
-                <img src={data.sprites.front_default ?? ""} className="w-64" />
+          <div className="col-span-2 flex flex-col items-center justify-center rounded-md p-8 md:flex-row md:justify-around dark:backdrop-brightness-120">
+            <figure className="rounded-2xl">
+              <div className="indicator">
+                <audio ref={audioRef} src={data.cries.latest} />
+                <span
+                  onClick={() => playSound()}
+                  className="indicator-item indicator-start indicator-bottom badge badge-primary px-1.75 py-3.5 pr-1 hover:cursor-pointer"
+                >
+                  <Volume1 />
+                </span>
+                <img
+                  src={data.sprites.front_default ?? ""}
+                  className="grid w-64 place-items-center rounded-xl bg-black/10"
+                />
               </div>
-            </div>
-          </figure>
-          <Description pokemonDetails={data} speciesDetails={specieData} />
-
+            </figure>
+            <Description pokemonDetails={data} speciesDetails={specieData} />
+          </div>
           <RadarChart stats={data.stats} pokemonName={data.name} />
           <SpiritesShow data={data} />
         </div>
