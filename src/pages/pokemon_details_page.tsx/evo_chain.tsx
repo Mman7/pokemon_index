@@ -43,11 +43,11 @@ export default function EvoChain({
               pokemonItemClassName={`${pokemonEvo == name && "border-1"}`}
               key={pokemonEvo}
               name={pokemonEvo}
-              pokemonImgClassName="w-34 lg:w-38"
+              pokemonImgClassName="w-34"
             />
             <div className="last:hidden">
-              <ChevronRight className={`m-6 hidden size-10 lg:block`} />
-              <ChevronDown className={`m-6 size-10 lg:hidden`} />
+              <ChevronRight className={`m-2 hidden size-10 lg:block`} />
+              <ChevronDown className={`m-2 size-10 lg:hidden`} />
             </div>
           </Fragment>
         ))}
