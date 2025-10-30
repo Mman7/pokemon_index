@@ -2,13 +2,14 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getItemList } from "../../api/pokemon_api";
 import LoadingView from "../../components/loading";
 import ItemCard from "./item_card";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import { Outlet, useMatch } from "react-router";
+import { Outlet, useLocation, useMatch } from "react-router";
 
 export default function ItemLayout() {
   const { ref, inView } = useInView();
-
+  const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const location = useLocation();
   const {
     data,
     isLoading,
@@ -29,6 +30,16 @@ export default function ItemLayout() {
   });
 
   useEffect(() => {
+    // back to the item with name
+    if (location.state && location?.state.item) {
+      refs.current[location?.state.item.name]?.scrollIntoView({
+        behavior: "instant",
+        block: "center",
+      });
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [inView]);
 
@@ -44,7 +55,14 @@ export default function ItemLayout() {
         className={`${isitemDetailPage && "hidden"} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {items.map((item, index) => (
-          <ItemCard key={index} item={item} />
+          <div
+            ref={(el) => {
+              refs.current[item.name] = el;
+            }}
+            key={index}
+          >
+            <ItemCard item={item} />
+          </div>
         ))}
       </div>
       {!isitemDetailPage && (
