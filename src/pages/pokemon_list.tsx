@@ -40,15 +40,10 @@ export default function PokemonList() {
   // scroll back to the card
   useEffect(() => {
     let state = location.state;
-    if (
-      state.searchData == undefined ||
-      state.searchData == null ||
-      state.searchData == ""
-    )
-      setSearchData([]);
+    if (state) if (state.searchData) setSearchData([]);
     if (state && state.searchData) setSearchData(state.searchData);
-    if (state && state.lastSeen) {
-      refs.current[state.lastSeen]?.scrollIntoView({
+    if (state && state?.pokemon) {
+      refs.current[state.pokemon.name]?.scrollIntoView({
         behavior: "instant",
         block: "center",
       });
@@ -57,8 +52,9 @@ export default function PokemonList() {
 
   const items = data?.pages.flatMap((p) => p.results) ?? [];
   const isPokemonDetailPage = useMatch("/pokemon/:name");
-  const hasSearchValue: boolean = location.state.searchInput !== "";
-  const searchResults: any = location.state?.searchData;
+  const hasSearchValue: boolean =
+    location.state && location.state?.searchInput !== "";
+  const searchResults: any = location.state && location.state?.searchData;
 
   const hasResults =
     searchResults && searchResults.length < 1 && hasSearchValue;
