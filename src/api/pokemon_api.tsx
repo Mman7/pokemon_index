@@ -1,9 +1,15 @@
-import { PokemonClient, EvolutionClient, type Pokemon } from "pokenode-ts";
+import {
+  PokemonClient,
+  EvolutionClient,
+  ItemClient,
+  type Pokemon,
+} from "pokenode-ts";
 
 const api = new PokemonClient();
 const evo = new EvolutionClient();
+const item = new ItemClient();
 
-export const getListPokemons = async ({
+export const getPokemonsList = async ({
   pageParam = 0,
 }: {
   pageParam: number;
@@ -34,5 +40,15 @@ export const getEvoChainsById = async ({ id }: { id: number }) => {
 
 export const getAllPokemonNames = async () => {
   const data = await api.listPokemons(0, 100000);
+  return data;
+};
+
+export const getItemList = async ({ pageParam = 0 }: { pageParam: number }) => {
+  const data = await item.listItems(pageParam, 20);
+  return data;
+};
+
+export const getItemByName = async ({ name }: { name: string }) => {
+  const data = await item.getItemByName(name);
   return data;
 };
