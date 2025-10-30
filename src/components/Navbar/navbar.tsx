@@ -24,6 +24,7 @@ export default function Navbar() {
   const { data: PokemonNames } = useQuery({
     queryKey: ["all"],
     queryFn: getAllPokemonNames,
+    enabled: isPokemonPage,
   });
 
   useEffect(() => {
