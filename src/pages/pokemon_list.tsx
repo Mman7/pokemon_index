@@ -2,9 +2,9 @@ import PokemonCard from "../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getListPokemons } from "../api/pokemon_api";
+import { getPokemonsList } from "../api/pokemon_api";
 import LoadingView from "../components/loading";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useMatch } from "react-router";
 import type { NamedAPIResource } from "pokenode-ts";
 
 export default function PokemonList() {
@@ -22,7 +22,7 @@ export default function PokemonList() {
     error,
   } = useInfiniteQuery({
     queryKey: ["pokemons"],
-    queryFn: getListPokemons,
+    queryFn: getPokemonsList,
     retry: 2,
     staleTime: 1000 * 60 * 5,
     initialPageParam: 0,
@@ -56,7 +56,7 @@ export default function PokemonList() {
   }, [location.state]);
 
   const items = data?.pages.flatMap((p) => p.results) ?? [];
-  const hidden: string = location.pathname !== "/pokemon" ? "hidden" : "block";
+  const isPokemonDetailPage = useMatch("/pokemon/:name");
   const hasSearchValue: boolean = location.state.searchInput !== "";
   const searchResults: any = location.state?.searchData;
 
@@ -68,10 +68,11 @@ export default function PokemonList() {
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
 
   if (hasResults) return <h1>Pokemon Not Found</h1>;
+
   return (
     <Fragment>
       <div
-        className={`${hidden} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
+        className={`${isPokemonDetailPage && "hidden"} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {/* Search List */}
         {searchData.map((pokemon: NamedAPIResource, index) => (
