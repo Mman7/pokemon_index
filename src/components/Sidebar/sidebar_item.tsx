@@ -16,7 +16,7 @@ export default function SidebarItem({
     : "text-black hover:backdrop-brightness-150 dark:text-white ";
 
   return (
-    <Link to={`/${title.toLocaleLowerCase()}`} state={title}>
+    <Link to={`/${title.toLocaleLowerCase()}`}>
       <li key={title}>
         <button
           onClick={callback}
