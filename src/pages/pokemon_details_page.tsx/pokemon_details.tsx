@@ -43,14 +43,12 @@ export default function PokemonDetails() {
       <div className="flex flex-col gap-6 p-6">
         <button
           className="btn btn-wide text-xl"
-          onClick={() =>
-            nav("..", { state: { ...state, lastSeen: data.name } })
-          }
+          onClick={() => nav("..", { state: { ...state } })}
         >
           <ArrowLeftFromLine />
           Pokemon Page
         </button>
-        <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
+        <main className="flex flex-col gap-6 md:grid md:grid-cols-2">
           <div className="col-span-2 flex flex-col items-center justify-center rounded-md p-8 md:flex-row md:justify-around dark:backdrop-brightness-120">
             <figure className="rounded-2xl">
               <div className="indicator">
@@ -71,7 +69,7 @@ export default function PokemonDetails() {
           </div>
           <RadarChart stats={data.stats} pokemonName={data.name} />
           <SpiritesShow data={data} />
-        </div>
+        </main>
         <EvoChain name={data.name} EvoChainId={getEvochainId()} />
       </div>
     </Wrapper>
