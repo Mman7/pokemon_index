@@ -8,10 +8,13 @@ export default function ItemDetails() {
   const nav = useNavigate();
   const state = location.state;
   const item: Item = state.item;
+  const eng = item?.flavor_text_entries.filter(
+    (text) => text.language.name == "en",
+  );
 
   return (
     <Wrapper>
-      <div className="flex-col p-6">
+      <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
         <button
           className="btn btn-wide text-xl"
           onClick={() => nav("..", { state: { ...state } })}
@@ -31,14 +34,13 @@ export default function ItemDetails() {
                 </span>
                 {` ${item.name}`}
               </h1>
-              <h2 className="text-gray-400">
-                {item.flavor_text_entries[0].text}
-              </h2>
+              {eng?.[0]?.text && <h2>{eng?.[0].text}</h2>}
             </div>
-
-            <h2 className="text-gray-800 dark:text-gray-300">
-              {item.effect_entries[0].effect}
-            </h2>
+            {item.effect_entries[0]?.effect && (
+              <h2 className="rounded-xl bg-gray-700 p-3 text-gray-800 dark:text-gray-300">
+                {item.effect_entries[0].effect}
+              </h2>
+            )}
             <div className="flex flex-col gap-1 font-medium *:text-2xl">
               <h2>Cost : {item.cost}</h2>
               {item.fling_power && <h2>Fling Power : {item.fling_power}</h2>}
@@ -51,7 +53,7 @@ export default function ItemDetails() {
             </div>
             <section>
               <h1 className="mb-2 text-2xl font-bold">Attributes</h1>
-              <div className="flex flex-row flex-wrap gap-2">
+              <div className="flex flex-row flex-wrap items-center justify-center gap-2 md:justify-start">
                 {item.attributes.map((element) => (
                   <div
                     key={element.name}
