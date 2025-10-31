@@ -48,7 +48,29 @@ export const getItemList = async ({ pageParam = 0 }: { pageParam: number }) => {
   return data;
 };
 
+export const getAllItems = async () => {
+  const data = await item.listItems(0, 100000);
+  return data;
+};
+
 export const getItemByName = async ({ name }: { name: string }) => {
   const data = await item.getItemByName(name);
   return data;
+};
+
+enum Path {
+  pokemon = "/pokemon",
+  item = "/item",
+}
+
+export const namesListByCondition = async ({ path }: { path: string }) => {
+  switch (path) {
+    case Path.pokemon:
+      return getAllPokemonNames();
+    case Path.item:
+      return getAllItems();
+    default:
+      return null;
+      break;
+  }
 };
