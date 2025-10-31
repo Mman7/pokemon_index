@@ -29,10 +29,10 @@ export default function ItemCard({ item }: { item: NamedAPIResource }) {
         item: data,
       }}
     >
-      <div className="card gap-2.75 rounded-xl p-6 px-0 shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
+      <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
         <figure>
           <img
-            className="w-24 rounded-xl bg-black/10 p-1"
+            className="w-30 rounded-xl bg-black/10 p-1"
             src={data?.sprites.default ?? undefined}
             alt={data?.name}
           />
