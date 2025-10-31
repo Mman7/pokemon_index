@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 import Sidebar from "./components/Sidebar/sidebar";
-import PokemonList from "./pages/pokemon_list";
-import PokemonDetails from "./pages/pokemon_details_page.tsx/pokemon_details";
+import PokemonList from "./pages/pokemon_page.tsx/pokemon_layout";
+import PokemonDetails from "./pages/pokemon_page.tsx/pokemon_details";
 import Home from "./pages/homepage/home_page";
 import ItemLayout from "./pages/item_page/item_layout";
 import ItemDetails from "./pages/item_page/item_details";
