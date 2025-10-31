@@ -2,9 +2,9 @@ import Searchbar from "./search_bar";
 import logo from "../../assets/logo.svg";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { getAllPokemonNames } from "../../api/pokemon_api";
+import { namesListByCondition } from "../../api/pokemon_api";
 import { useQuery } from "@tanstack/react-query";
-import type { NamedAPIResource, NamedAPIResourceList } from "pokenode-ts";
+import type { NamedAPIResource } from "pokenode-ts";
 
 const splitIdFromLink = (link: string): string => {
   return link.split("/")[6];
@@ -15,36 +15,38 @@ export default function Navbar() {
   const [isFocus, setFocus] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage = location.pathname === "/";
-  const isPokemonPage = location.pathname === "/pokemon";
-  const [results, setResults] = useState<NamedAPIResourceList | undefined>(
-    undefined,
-  );
+  const isHomePage: boolean = location.pathname === "/";
+  const [results, setResults] = useState<NamedAPIResource[]>([]);
 
-  const { data: PokemonNames } = useQuery({
-    queryKey: ["all"],
-    queryFn: getAllPokemonNames,
-    enabled: isPokemonPage,
+  const { data } = useQuery({
+    queryKey: [location.pathname],
+    queryFn: () => namesListByCondition({ path: location.pathname }),
   });
 
+  const clearResults = () => {
+    setResults([]);
+    navigate(location.pathname, {
+      state: { ...location.state, searchData: [], searchInput: "" },
+    });
+    return;
+  };
+
   useEffect(() => {
-    if (!isPokemonPage || !PokemonNames) return;
-    if (inputValue == "") {
-      setResults(undefined);
-      navigate("/pokemon", {
-        state: { ...location.state, searchData: [], searchInput: "" },
-      });
-      return;
-    }
+    setResults([]);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const filterList = (data?.results ?? []).filter((p: NamedAPIResource) =>
+      p.name.toLowerCase().includes(inputValue.toLowerCase()),
+    );
+    // handle clear input
+    if (inputValue == "") clearResults();
 
     // Handle search
     const timeout = setTimeout(() => {
-      if (!isPokemonPage) return;
-      const filterList = PokemonNames?.results.filter((p: NamedAPIResource) =>
-        p.name.toLowerCase().includes(inputValue.toLowerCase()),
-      );
       if (inputValue !== "") {
-        navigate("/pokemon", {
+        setResults(filterList.slice(0, 10));
+        navigate(location.pathname, {
           state: {
             ...location.state,
             searchData: filterList.slice(0, 10),
@@ -52,12 +54,15 @@ export default function Navbar() {
           },
         });
       }
-      setResults({ ...PokemonNames, results: filterList.slice(0, 10) });
     }, 400);
+
     return () => {
       clearTimeout(timeout);
     };
   }, [inputValue]);
+
+  const isHidden: boolean =
+    location.pathname !== "/pokemon" && location.pathname !== "/item";
 
   return (
     <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
@@ -96,7 +101,7 @@ export default function Navbar() {
             setFocus={setFocus}
             value={inputValue}
             setInputValue={setInputValue}
-            isHidden={location.pathname !== "/pokemon"}
+            isHidden={isHidden}
           />
           <div
             id="search-results"
@@ -105,16 +110,16 @@ export default function Navbar() {
             <ul
               className={`${!isFocus && "hidden"} divide-yp-1 backdrop-brightness-140`}
             >
-              {results?.results.map((pokemon, index) => (
+              {results?.map((item, index) => (
                 <li
                   key={index}
-                  onClick={() => setInputValue(pokemon.name)}
+                  onClick={() => setInputValue(item.name)}
                   className="cursor-pointer rounded-md p-2 capitalize transition hover:bg-red-700 active:bg-red-800"
                 >
                   <span className="text-gray-400">
-                    #{splitIdFromLink(pokemon.url)}
+                    #{splitIdFromLink(item.url)}
                   </span>{" "}
-                  {pokemon.name}
+                  {item.name}
                 </li>
               ))}
             </ul>
