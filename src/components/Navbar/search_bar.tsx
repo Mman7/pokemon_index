@@ -19,7 +19,7 @@ export default function Searchbar({
 
   const onFocus = () => setFocus(true);
   const onBlur = () => {
-    setTimeout(() => setFocus(false));
+    setTimeout(() => setFocus(false), 100);
   };
 
   return (
