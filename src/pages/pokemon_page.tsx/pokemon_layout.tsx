@@ -1,15 +1,16 @@
-import PokemonCard from "../components/pokemon_item_card";
+import PokemonCard from "../../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getPokemonsList } from "../api/pokemon_api";
-import LoadingView from "../components/loading";
+import { getPokemonsList } from "../../api/pokemon_api";
+import LoadingView from "../../components/loading";
 import { Outlet, useLocation, useMatch } from "react-router";
 import type { NamedAPIResource } from "pokenode-ts";
+import PokemonList from "./pokemon_list";
 
-export default function PokemonList() {
+export default function PokemonLayout() {
   const { ref, inView } = useInView();
-  const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const pokemonsRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const location = useLocation();
   const [searchData, setSearchData] = useState<NamedAPIResource[]>([]);
 
@@ -32,6 +33,15 @@ export default function PokemonList() {
     },
   });
 
+  const restoreScrollPosition = () => {
+    if (location.state && location?.state.pokemon) {
+      pokemonsRefs.current[location?.state.pokemon.name]?.scrollIntoView({
+        behavior: "instant",
+        block: "center",
+      });
+    }
+  };
+
   // If user reached bottom fetch more data
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -40,14 +50,8 @@ export default function PokemonList() {
   // scroll back to the card
   useEffect(() => {
     let state = location.state;
-    if (state) if (state.searchData) setSearchData([]);
     if (state && state.searchData) setSearchData(state.searchData);
-    if (state && state?.pokemon) {
-      refs.current[state.pokemon.name]?.scrollIntoView({
-        behavior: "instant",
-        block: "center",
-      });
-    }
+    restoreScrollPosition();
   }, [location.state]);
 
   const items = data?.pages.flatMap((p) => p.results) ?? [];
@@ -65,41 +69,32 @@ export default function PokemonList() {
 
   if (hasResults) return <h1>Pokemon Not Found</h1>;
 
+  const searchDataEmpty = searchData.length < 1;
+
   return (
     <Fragment>
-      <div
-        className={`${isPokemonDetailPage && "hidden"} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
+      <section
+        className={`${isPokemonDetailPage && "hidden"} grid w-full grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {/* Search List */}
-        {searchData.map((pokemon: NamedAPIResource, index) => (
-          <div
-            ref={(el) => {
-              refs.current[pokemon.name] = el;
-            }}
-            key={index}
-            className={`${searchData.length < 1 && "hidden"}`}
-          >
-            <PokemonCard name={pokemon.name} pokemonImgClassName="w-68" />
-          </div>
-        ))}
+        <PokemonList
+          isShowing={!searchDataEmpty}
+          items={searchData}
+          refs={pokemonsRefs}
+        />
 
         {/* Normal List */}
-        {items.map((item: NamedAPIResource, index) => (
-          <div
-            className={`${searchData.length > 0 && "hidden"} `}
-            key={index}
-            ref={(el) => {
-              refs.current[item.name] = el;
-            }}
-          >
-            <PokemonCard name={item.name} pokemonImgClassName="w-68" />
-          </div>
-        ))}
+        <PokemonList
+          isShowing={searchDataEmpty}
+          items={items}
+          refs={pokemonsRefs}
+        />
+
         {/* Reached this div will fetch more data*/}
-        {searchData.length < 1 && (
-          <div ref={ref}>{isFetchingNextPage && <LoadingView />}</div>
+        {searchDataEmpty && (
+          <div ref={ref}>{!isFetchingNextPage && <LoadingView />}</div>
         )}
-      </div>
+      </section>
       <Outlet />
     </Fragment>
   );
