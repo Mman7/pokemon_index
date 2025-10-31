@@ -1,14 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  getEvoChainsById,
-  getPokemonDetailByName,
-} from "../../api/pokemon_api";
+import { getEvoChainsById } from "../../api/pokemon_api";
 import type { EvolutionChain } from "pokenode-ts";
-import { ChevronDown, ChevronRight, Link } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import PokemonCard from "../../components/pokemon_item_card";
 import { Fragment } from "react/jsx-runtime";
-
-//TODO finish this
 
 export default function EvoChain({
   name,
