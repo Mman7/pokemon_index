@@ -2,19 +2,19 @@ import { ArrowLeftFromLine, Volume1 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 import Description from "./description";
 import { Wrapper } from "../../components/wrapper";
-import RadarChart from "../../components/chart";
-import type { Pokemon } from "pokenode-ts";
+import Charts from "../../components/chart";
 import SpiritesShow from "./sprites_show_list";
 import EvoChain from "./evo_chain";
 import { getPokemonSpeciesByName } from "../../api/pokemon_api";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import type { Pokemon } from "pokenode-ts";
 
 export default function PokemonDetails() {
   const location = useLocation();
   const nav = useNavigate();
   let state: any = location.state;
-  const data: any = state.pokemon;
+  const data: Pokemon | any = state.pokemon;
   const { data: specieData } = useQuery({
     queryKey: [`${data.name}Specie`],
     queryFn: () => getPokemonSpeciesByName({ name: data.name }),
@@ -37,6 +37,24 @@ export default function PokemonDetails() {
   };
 
   if (state === null) return <div>not found</div>;
+
+  const baseStats: number[] = [
+    data.stats[0].base_stat,
+    data.stats[1].base_stat,
+    data.stats[2].base_stat,
+    data.stats[3].base_stat,
+    data.stats[4].base_stat,
+    data.stats[5].base_stat,
+  ];
+
+  const statsLabel = [
+    data.stats[0].stat.name.toUpperCase(),
+    data.stats[1].stat.name.toUpperCase(),
+    data.stats[2].stat.name.toUpperCase(),
+    data.stats[3].stat.name.toUpperCase(),
+    data.stats[4].stat.name.toUpperCase(),
+    data.stats[5].stat.name.toUpperCase(),
+  ];
 
   return (
     <Wrapper>
@@ -67,35 +85,18 @@ export default function PokemonDetails() {
             </figure>
             <Description pokemonDetails={data} speciesDetails={specieData} />
           </div>
-          <RadarChart stats={data.stats} pokemonName={data.name} />
+          <Charts
+            labelTitle="Pokemon Stats"
+            stats={baseStats}
+            ItemName={data.name}
+            chartType="radar"
+            statsLabel={statsLabel}
+          />
+
           <SpiritesShow data={data} />
         </main>
         <EvoChain name={data.name} EvoChainId={getEvochainId()} />
       </div>
     </Wrapper>
   );
-}
-
-export function DescriptionSkeleton() {
-  return (
-    <div className="shadow-x flex flex-col gap-3.5 rounded-2xl px-10 py-6 *:items-center *:text-center md:*:items-start md:*:text-start dark:backdrop-brightness-130">
-      <div className="skeleton h-8 w-28" />
-      <div className="skeleton h-8 w-full" />
-      <div className="skeleton h-8 w-28" />
-      <div className="skeleton h-8 w-28" />
-      <div className="flex flex-row flex-wrap gap-3">
-        <div className="skeleton h-8 w-28" />
-        <div className="skeleton h-8 w-28" />
-      </div>
-      <div className="skeleton h-8 w-18" />
-      <div className="flex flex-row flex-wrap gap-3">
-        <div className="skeleton h-8 w-14" />
-        <div className="skeleton h-8 w-14" />
-      </div>
-    </div>
-  );
-}
-
-export function PlaySound() {
-  return <div>PlaySound</div>;
 }
