@@ -1,23 +1,8 @@
-import { Radar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Bar, Radar } from "react-chartjs-2";
+import { Chart as ChartJS, registerables } from "chart.js";
 import { useEffect, useState } from "react";
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(...registerables);
 
 let defaultChartLineColor = "#1AEEF4";
 let textColor = "black";
@@ -28,21 +13,36 @@ if (
 ) {
   textColor = "white";
 }
-export default function RadarChart({
-  pokemonName,
+
+export default function Charts({
+  ItemName,
+  chartType,
+  labelTitle,
   stats,
   statsLabel,
 }: {
-  pokemonName: string;
+  ItemName: string;
+  chartType: "bar" | "radar";
+  labelTitle: string;
   stats: number[];
   statsLabel: string[];
 }) {
-  const labelName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+  const labelName = ItemName.charAt(0).toUpperCase() + ItemName.slice(1);
   const [maxValue, setMaxValue] = useState<number>(100);
+
+  const chartTypeSelector = () => {
+    switch (chartType) {
+      case "radar":
+        return <Radar options={options} data={dataset} />;
+      case "bar":
+        return <Bar options={options} data={dataset} />;
+    }
+  };
 
   useEffect(() => {
     for (let index = 0; index < stats.length; index++) {
       const element = stats[index];
+      if (element < 30) setMaxValue(10);
       if (element > 100) setMaxValue(150);
       if (element > 150) setMaxValue(200);
       if (element > 200) setMaxValue(250);
@@ -74,7 +74,7 @@ export default function RadarChart({
       },
       title: {
         display: true,
-        text: "Pokemon Stats",
+        text: labelTitle,
         color: textColor,
       },
     },
@@ -105,7 +105,7 @@ export default function RadarChart({
   return (
     <div className="w-full gap-6 rounded-2xl p-6 shadow-xl dark:backdrop-brightness-120">
       <h1 className="text-center text-2xl font-bold md:text-start">Stats</h1>
-      <Radar options={options} data={dataset} />
+      {chartTypeSelector()}
     </div>
   );
 }
