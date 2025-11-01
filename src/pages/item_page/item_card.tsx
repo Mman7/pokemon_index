@@ -30,12 +30,12 @@ export default function ItemCard({ item }: { item: NamedAPIResource }) {
       }}
     >
       <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
-        <figure>
-          <img
-            className="w-30 rounded-xl bg-black/10 p-1"
-            src={data?.sprites.default ?? undefined}
-            alt={data?.name}
-          />
+        <figure className="flex items-center justify-center">
+          {data?.sprites.default ? (
+            <img className="w-32" src={data?.sprites.default} alt={item.name} />
+          ) : (
+            <div className="h-32 p-5 text-center text-6xl">?</div>
+          )}
         </figure>
         <div className="flex items-center justify-center gap-1">
           <div
@@ -44,7 +44,7 @@ export default function ItemCard({ item }: { item: NamedAPIResource }) {
             #{data?.id}
           </div>
           <span
-            className={`${(data?.name.length ?? 0) > 12 && "text-xs"} badge bg-gray-500 px-3 py-3 text-base font-medium text-white capitalize dark:bg-gray-600`}
+            className={`${(data?.name.length ?? 0) > 12 && "text-xs"} badge bg-gray-500 px-3 py-3 text-base font-medium whitespace-nowrap text-white capitalize dark:bg-gray-600`}
           >
             {data?.name}
           </span>

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
 import { Wrapper } from "../../components/wrapper";
-import { ArrowLeftFromLine } from "lucide-react";
+import { ArrowLeftFromLine, Divide } from "lucide-react";
 import type { Item } from "pokenode-ts";
 
 export default function ItemDetails() {
@@ -11,7 +11,7 @@ export default function ItemDetails() {
   const eng = item?.flavor_text_entries.filter(
     (text) => text.language.name == "en",
   );
-
+  console.log(item.sprites.default ?? "hello");
   return (
     <Wrapper>
       <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
@@ -24,7 +24,15 @@ export default function ItemDetails() {
         </button>
         <main className="mt-4 flex w-full flex-col gap-6 rounded p-6 shadow-lg md:grid md:grid-cols-2 dark:bg-black/10">
           <figure className="flex items-center justify-center rounded-xl bg-sky-200/10 dark:bg-black/20">
-            <img className="w-32" src={item.sprites.default} alt={item.name} />
+            {item.sprites.default ? (
+              <img
+                className="w-32"
+                src={item.sprites.default}
+                alt={item.name}
+              />
+            ) : (
+              <div className="text-9xl">?</div>
+            )}
           </figure>
           <section className="flex flex-col gap-3">
             <div>
