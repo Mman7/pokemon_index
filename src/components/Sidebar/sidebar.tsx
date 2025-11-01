@@ -9,9 +9,7 @@ export default function Sidebar() {
     setSelect(location.pathname);
   }, [location]);
 
-  const items_list1 = ["Pokemon", "Move", "Ability"];
-  const items_list2 = ["Location"];
-  const items_list3 = ["Item", "Berry", "Game"];
+  const items_list1 = ["Pokemon", "Item", "Berry"];
 
   const dividedLine = (
     <div className="mx-3 my-1.5 flex items-center border-t border-gray-700" />
@@ -23,25 +21,9 @@ export default function Sidebar() {
         callback={() => setSelect(null)}
         isSelected={select === "/"}
       />
+      {dividedLine}
+
       {items_list1.map((item) => (
-        <SidebarItem
-          title={item}
-          key={item}
-          callback={() => setSelect(item)}
-          isSelected={select === `/${item.toLowerCase()}`}
-        />
-      ))}
-      {dividedLine}
-      {items_list2.map((item) => (
-        <SidebarItem
-          title={item}
-          key={item}
-          callback={() => setSelect(item)}
-          isSelected={select === `/${item.toLowerCase()}`}
-        />
-      ))}
-      {dividedLine}
-      {items_list3.map((item) => (
         <SidebarItem
           title={item}
           key={item}
