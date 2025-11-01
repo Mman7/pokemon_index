@@ -31,23 +31,18 @@ if (
 export default function RadarChart({
   pokemonName,
   stats,
+  statsLabel,
 }: {
   pokemonName: string;
-  stats: any;
+  stats: number[];
+  statsLabel: string[];
 }) {
   const labelName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
   const [maxValue, setMaxValue] = useState<number>(100);
-  const baseStats: number[] = [
-    stats[0]["base_stat"],
-    stats[1]["base_stat"],
-    stats[2]["base_stat"],
-    stats[3]["base_stat"],
-    stats[4]["base_stat"],
-    stats[5]["base_stat"],
-  ];
+
   useEffect(() => {
-    for (let index = 0; index < baseStats.length; index++) {
-      const element = baseStats[index];
+    for (let index = 0; index < stats.length; index++) {
+      const element = stats[index];
       if (element > 100) setMaxValue(150);
       if (element > 150) setMaxValue(200);
       if (element > 200) setMaxValue(250);
@@ -55,18 +50,11 @@ export default function RadarChart({
   }, []);
 
   const dataset = {
-    labels: [
-      "HP",
-      "Attack",
-      "Defense",
-      "Special-Attack",
-      "Special-Defense",
-      "Speed",
-    ],
+    labels: statsLabel,
     datasets: [
       {
         label: labelName,
-        data: baseStats,
+        data: stats,
         fill: true,
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgb(255, 99, 132)",
