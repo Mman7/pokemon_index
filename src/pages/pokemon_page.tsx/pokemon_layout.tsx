@@ -1,4 +1,3 @@
-import PokemonCard from "../../components/pokemon_item_card";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -6,7 +5,8 @@ import { getPokemonsList } from "../../api/pokemon_api";
 import LoadingView from "../../components/loading";
 import { Outlet, useLocation, useMatch } from "react-router";
 import type { NamedAPIResource } from "pokenode-ts";
-import PokemonList from "./pokemon_list";
+import ItemList from "../../components/item_list";
+import PokemonCard from "../../components/pokemon_item_card";
 
 export default function PokemonLayout() {
   const { ref, inView } = useInView();
@@ -20,6 +20,7 @@ export default function PokemonLayout() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    isFetching,
     error,
   } = useInfiniteQuery({
     queryKey: ["pokemons"],
@@ -44,7 +45,7 @@ export default function PokemonLayout() {
 
   // If user reached bottom fetch more data
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
+    if (inView && hasNextPage && !isFetching) fetchNextPage();
   }, [inView]);
 
   // scroll back to the card
@@ -56,19 +57,17 @@ export default function PokemonLayout() {
 
   const items = data?.pages.flatMap((p) => p.results) ?? [];
   const isPokemonDetailPage = useMatch("/pokemon/:name");
+
   const hasSearchValue: boolean =
     location.state && location.state?.searchInput !== "";
   const searchResults: any = location.state && location.state?.searchData;
-
   const hasResults =
     searchResults && searchResults.length < 1 && hasSearchValue;
+  if (hasResults) return <h1 className="text-center">Pokemon Not Found</h1>;
 
   if (isLoading) return <LoadingView />;
 
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
-
-  if (hasResults) return <h1>Pokemon Not Found</h1>;
-
   const searchDataEmpty = searchData.length < 1;
 
   return (
@@ -77,18 +76,22 @@ export default function PokemonLayout() {
         className={`${isPokemonDetailPage && "hidden"} grid w-full grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {/* Search List */}
-        <PokemonList
+        <ItemList
           isShowing={!searchDataEmpty}
           items={searchData}
           refs={pokemonsRefs}
-        />
+        >
+          {(item) => (
+            <PokemonCard name={item.name} pokemonImgClassName={"w-58"} />
+          )}
+        </ItemList>
 
         {/* Normal List */}
-        <PokemonList
-          isShowing={searchDataEmpty}
-          items={items}
-          refs={pokemonsRefs}
-        />
+        <ItemList isShowing={searchDataEmpty} items={items} refs={pokemonsRefs}>
+          {(item) => (
+            <PokemonCard name={item.name} pokemonImgClassName={"w-58"} />
+          )}
+        </ItemList>
 
         {/* Reached this div will fetch more data*/}
         {searchDataEmpty && (
