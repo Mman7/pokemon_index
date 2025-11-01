@@ -1,19 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useLocation } from "react-router";
 import { TypeBadges } from "./type_badges";
 import { getPokemonDetailByName } from "../api/pokemon_api";
+import ItemCardSkeleton from "./item_card_skeleton";
+import ItemImg from "./item_img";
 
-export default function PokemonCard({
-  name,
-  pokemonImgClassName,
-  pokemonItemClassName,
-}: {
+interface PokemonCardProps {
   name: string;
   isSearch?: boolean | null;
   pokemonImgClassName: string;
   pokemonItemClassName?: string;
-}) {
+}
+
+export default function PokemonCard({
+  name,
+  pokemonItemClassName,
+}: PokemonCardProps) {
   const location = useLocation();
   const {
     data: baseData,
@@ -27,16 +29,7 @@ export default function PokemonCard({
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) {
-    const defaultStyle = "skeleton bg-gray-300 dark:bg-gray-700";
-    return (
-      <div className="flex w-52 flex-col gap-4">
-        <div className={`${defaultStyle} h-32 w-full`}></div>
-        <div className={`${defaultStyle} h-8 w-full`}></div>
-        <div className={`${defaultStyle} h-8 w-full`}></div>
-      </div>
-    );
-  }
+  if (isLoading) return <ItemCardSkeleton />;
 
   if (error && error.message == "Request failed with status code 404")
     return (
@@ -75,11 +68,9 @@ export default function PokemonCard({
             <span className="indicator-item indicator-start indicator-bottom badge bg-gray-500 p-1.5 text-xs font-medium text-gray-300 dark:bg-gray-600">
               #{baseData?.id}
             </span>
-            <LazyLoadImage
-              loading="lazy"
-              className={`${pokemonImgClassName}`}
+            <ItemImg
+              src={baseData?.sprites.front_default ?? undefined}
               alt={baseData?.name}
-              src={baseData?.sprites.front_default ?? ""}
             />
           </div>
         </figure>
