@@ -7,14 +7,12 @@ import ItemImg from "./item_img";
 
 interface PokemonCardProps {
   name: string;
-  isSearch?: boolean | null;
   pokemonImgClassName: string;
-  pokemonItemClassName?: string;
 }
 
 export default function PokemonCard({
   name,
-  pokemonItemClassName,
+  pokemonImgClassName,
 }: PokemonCardProps) {
   const location = useLocation();
   const {
@@ -46,9 +44,7 @@ export default function PokemonCard({
         pokemon: baseData,
       }}
     >
-      <div
-        className={`${pokemonItemClassName} card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140`}
-      >
+      <div className="card rounded-xl shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
         <figure className="p-8">
           <div className="indicator rounded-2xl bg-black/5">
             <div className="indicator-item indicator-center badge flex gap-5 border-0 bg-transparent">
@@ -69,6 +65,7 @@ export default function PokemonCard({
               #{baseData?.id}
             </span>
             <ItemImg
+              imgClassName={pokemonImgClassName}
               src={baseData?.sprites.front_default ?? undefined}
               alt={baseData?.name}
             />
