@@ -42,7 +42,7 @@ export default function Charts({
   useEffect(() => {
     for (let index = 0; index < stats.length; index++) {
       const element = stats[index];
-      if (element < 30) setMaxValue(10);
+      if (element <= 10) setMaxValue(10);
       if (element > 100) setMaxValue(150);
       if (element > 150) setMaxValue(200);
       if (element > 200) setMaxValue(250);
