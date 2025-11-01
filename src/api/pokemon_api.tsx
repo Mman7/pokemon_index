@@ -2,12 +2,14 @@ import {
   PokemonClient,
   EvolutionClient,
   ItemClient,
+  BerryClient,
   type Pokemon,
 } from "pokenode-ts";
 
 const api = new PokemonClient();
 const evo = new EvolutionClient();
 const item = new ItemClient();
+const berry = new BerryClient();
 
 export const getPokemonsList = async ({
   pageParam = 0,
@@ -58,9 +60,29 @@ export const getItemByName = async ({ name }: { name: string }) => {
   return data;
 };
 
+export const getAllberry = async () => {
+  const data = await berry.listBerries(0, 100000);
+  return data;
+};
+
+export const getBerryList = async ({
+  pageParam = 0,
+}: {
+  pageParam: number;
+}) => {
+  const data = await berry.listBerries(pageParam, 20);
+  return data;
+};
+
+export const getBerryByName = async ({ name }: { name: string }) => {
+  const data = await berry.getBerryByName(name);
+  return data;
+};
+
 enum Path {
   pokemon = "/pokemon",
   item = "/item",
+  berry = "/berry",
 }
 
 export const namesListByCondition = async ({ path }: { path: string }) => {
@@ -69,6 +91,8 @@ export const namesListByCondition = async ({ path }: { path: string }) => {
       return getAllPokemonNames();
     case Path.item:
       return getAllItems();
+    case Path.berry:
+      return getAllberry();
     default:
       return null;
       break;
