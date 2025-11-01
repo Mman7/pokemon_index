@@ -33,7 +33,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setResults([]);
-  }, [location.pathname]);
+  }, [location.state]);
 
   useEffect(() => {
     const filterList = (data?.results ?? []).filter((p: NamedAPIResource) =>
@@ -49,7 +49,7 @@ export default function Navbar() {
         navigate(location.pathname, {
           state: {
             ...location.state,
-            searchData: filterList.slice(0, 10),
+            searchData: filterList,
             searchInput: inputValue,
           },
         });
@@ -61,8 +61,8 @@ export default function Navbar() {
     };
   }, [inputValue]);
 
-  const isHidden: boolean =
-    location.pathname !== "/pokemon" && location.pathname !== "/item";
+  const visiblePaths = ["/pokemon", "/item", "/berry"];
+  const isHidden = !visiblePaths.includes(location.pathname);
 
   return (
     <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
