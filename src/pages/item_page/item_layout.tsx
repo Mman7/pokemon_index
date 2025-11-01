@@ -4,7 +4,7 @@ import LoadingView from "../../components/loading";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Outlet, useLocation, useMatch } from "react-router";
-import ItemList from "./item_list";
+import ItemList from "../../components/item_list";
 import type { NamedAPIResource } from "pokenode-ts";
 import ItemCard from "./item_card";
 
@@ -20,6 +20,7 @@ export default function ItemLayout() {
     error,
     fetchNextPage,
     hasNextPage,
+    isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["items"],
@@ -50,16 +51,24 @@ export default function ItemLayout() {
   }, [location.state]);
 
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
+    if (inView && hasNextPage && !isFetching) fetchNextPage();
   }, [inView]);
+  // if search value has nothing return element
+  const hasSearchValue: boolean =
+    location.state && location.state?.searchInput !== "";
+  const searchResults: any = location.state && location.state?.searchData;
 
-  if (isLoading) <LoadingView />;
-  if (error) <div>{error.message}</div>;
+  const hasResults =
+    searchResults && searchResults.length < 1 && hasSearchValue;
 
   const isitemDetailPage = useMatch("/item/:name");
   const items = data?.pages.flatMap((p) => p.results) ?? [];
 
   const searchDataEmpty = searchData.length < 1;
+
+  if (isLoading) return <LoadingView />;
+  if (error) <div>{error.message}</div>;
+  if (hasResults) return <h1 className="text-center">Item Not Found</h1>;
   return (
     <Fragment>
       <section
@@ -80,7 +89,7 @@ export default function ItemLayout() {
         </ItemList>
 
         {/*  Reached this div will fetch more data */}
-        {searchDataEmpty && (
+        {hasNextPage && searchDataEmpty && (
           <div ref={ref}>{!isFetchingNextPage && <LoadingView />}</div>
         )}
       </section>
