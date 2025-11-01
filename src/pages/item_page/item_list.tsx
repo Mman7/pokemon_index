@@ -1,29 +1,30 @@
 import type { NamedAPIResource } from "pokenode-ts";
-import { Fragment } from "react/jsx-runtime";
-import ItemCard from "./item_card";
+import type { ReactElement } from "react";
 
 export default function ItemList({
   items,
   isShowing,
   refs,
+  children,
 }: {
   items: NamedAPIResource[];
   isShowing: boolean;
   refs: any;
+  children: (item: NamedAPIResource) => ReactElement;
 }) {
   return (
-    <Fragment>
-      {items.map((item: NamedAPIResource, index) => (
+    <>
+      {items.map((item) => (
         <div
-          className={` ${isShowing ? "block" : "hidden"}`}
-          key={index}
+          key={item.name}
+          className={isShowing ? "block" : "hidden"}
           ref={(el) => {
             refs.current[item.name] = el;
           }}
         >
-          <ItemCard item={item} />
+          {children(item)}
         </div>
       ))}
-    </Fragment>
+    </>
   );
 }

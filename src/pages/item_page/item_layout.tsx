@@ -6,10 +6,11 @@ import { useInView } from "react-intersection-observer";
 import { Outlet, useLocation, useMatch } from "react-router";
 import ItemList from "./item_list";
 import type { NamedAPIResource } from "pokenode-ts";
+import ItemCard from "./item_card";
 
 export default function ItemLayout() {
   const { ref, inView } = useInView();
-  const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const location = useLocation();
   const [searchData, setSearchData] = useState<NamedAPIResource[]>([]);
 
@@ -35,7 +36,7 @@ export default function ItemLayout() {
   // back to the item with name
   const restoreScrollPosition = () => {
     if (location.state && location?.state.item) {
-      refs.current[location?.state.item.name]?.scrollIntoView({
+      itemRefs.current[location?.state.item.name]?.scrollIntoView({
         behavior: "instant",
         block: "center",
       });
@@ -59,16 +60,25 @@ export default function ItemLayout() {
   const items = data?.pages.flatMap((p) => p.results) ?? [];
 
   const searchDataEmpty = searchData.length < 1;
-
   return (
     <Fragment>
       <section
         className={`${isitemDetailPage && "hidden"} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {/* Search List */}
-        <ItemList items={searchData} isShowing={!searchDataEmpty} refs={refs} />
+        <ItemList
+          items={searchData}
+          isShowing={!searchDataEmpty}
+          refs={itemRefs}
+        >
+          {(item) => <ItemCard item={item} />}
+        </ItemList>
+
         {/* Normal List */}
-        <ItemList items={items} isShowing={searchDataEmpty} refs={refs} />
+        <ItemList items={items} isShowing={searchDataEmpty} refs={itemRefs}>
+          {(item) => <ItemCard item={item} />}
+        </ItemList>
+
         {/*  Reached this div will fetch more data */}
         {searchDataEmpty && (
           <div ref={ref}>{!isFetchingNextPage && <LoadingView />}</div>
