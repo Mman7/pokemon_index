@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router";
 import { Wrapper } from "../../components/wrapper";
-import { ArrowLeftFromLine, Divide } from "lucide-react";
+import { ArrowLeftFromLine } from "lucide-react";
 import type { Item } from "pokenode-ts";
+import ItemImg from "../../components/item_img";
 
 export default function ItemDetails() {
   const location = useLocation();
@@ -11,7 +12,6 @@ export default function ItemDetails() {
   const eng = item?.flavor_text_entries.filter(
     (text) => text.language.name == "en",
   );
-  console.log(item.sprites.default ?? "hello");
   return (
     <Wrapper>
       <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
@@ -23,17 +23,7 @@ export default function ItemDetails() {
           Explore more item
         </button>
         <main className="mt-4 flex w-full flex-col gap-6 rounded p-6 shadow-lg md:grid md:grid-cols-2 dark:bg-black/10">
-          <figure className="flex items-center justify-center rounded-xl bg-sky-200/10 dark:bg-black/20">
-            {item.sprites.default ? (
-              <img
-                className="w-32"
-                src={item.sprites.default}
-                alt={item.name}
-              />
-            ) : (
-              <div className="text-9xl">?</div>
-            )}
-          </figure>
+          <ItemImg alt={item.name} src={item.sprites.default} />
           <section className="flex flex-col gap-3">
             <div>
               <h1 className="text-2xl font-bold capitalize">
@@ -45,7 +35,7 @@ export default function ItemDetails() {
               {eng?.[0]?.text && <h2>{eng?.[0].text}</h2>}
             </div>
             {item.effect_entries[0]?.effect && (
-              <h2 className="rounded-xl bg-gray-700 p-3 text-gray-800 dark:text-gray-300">
+              <h2 className="rounded-xl bg-gray-700 p-3 text-gray-300">
                 {item.effect_entries[0].effect}
               </h2>
             )}
