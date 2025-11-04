@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getItemList } from "../../api/pokemon_api";
 import LoadingView from "../../components/loading";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Outlet, useLocation, useMatch } from "react-router";
 import ItemList from "../../components/item_list";
@@ -10,7 +10,6 @@ import ItemCard from "./item_card";
 
 export default function ItemLayout() {
   const { ref, inView } = useInView();
-  const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const location = useLocation();
   const [searchData, setSearchData] = useState<NamedAPIResource[]>([]);
 
@@ -35,56 +34,35 @@ export default function ItemLayout() {
   });
 
   // back to the item with name
-  const restoreScrollPosition = () => {
-    if (location.state && location?.state.item) {
-      itemRefs.current[location?.state.item.name]?.scrollIntoView({
-        behavior: "instant",
-        block: "center",
-      });
-    }
-  };
 
   useEffect(() => {
     let state = location.state;
     if (state && state.searchData) setSearchData(state.searchData);
-    restoreScrollPosition();
   }, [location.state]);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) fetchNextPage();
   }, [inView]);
   // if search value has nothing return element
-  const hasSearchValue: boolean =
-    location.state && location.state?.searchInput !== "";
-  const searchResults: any = location.state && location.state?.searchData;
-
-  const hasResults =
-    searchResults && searchResults.length < 1 && hasSearchValue;
-
   const isitemDetailPage = useMatch("/item/:name");
   const items = data?.pages.flatMap((p) => p.results) ?? [];
 
+  const hasNoResults: any =
+    location?.state &&
+    location.state?.searchInput !== "" &&
+    searchData.length < 1;
   const searchDataEmpty = searchData.length < 1;
+  const visibleItem = !searchDataEmpty ? searchData : items;
 
   if (isLoading) return <LoadingView />;
   if (error) <div>{error.message}</div>;
-  if (hasResults) return <h1 className="text-center">Item Not Found</h1>;
+  if (hasNoResults) return <h1 className="p-10 text-center">Item Not Found</h1>;
   return (
     <Fragment>
       <section
         className={`${isitemDetailPage && "hidden"} grid grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
-        {/* Search List */}
-        <ItemList
-          items={searchData}
-          isShowing={!searchDataEmpty}
-          refs={itemRefs}
-        >
-          {(item) => <ItemCard item={item} />}
-        </ItemList>
-
-        {/* Normal List */}
-        <ItemList items={items} isShowing={searchDataEmpty} refs={itemRefs}>
+        <ItemList items={visibleItem}>
           {(item) => <ItemCard item={item} />}
         </ItemList>
 
