@@ -28,7 +28,7 @@ export default function BerryCard({ item }: { item: NamedAPIResource }) {
         itemData: itemData,
       }}
     >
-      <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
+      <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 transition-transform duration-200 hover:scale-105 hover:cursor-pointer hover:backdrop-brightness-140 active:scale-95">
         <ItemImg alt={berry?.name} src={itemData?.sprites.default} />
         <div className="flex items-center justify-center gap-1">
           <div

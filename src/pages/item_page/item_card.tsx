@@ -23,7 +23,7 @@ export default function ItemCard({ item }: { item: NamedAPIResource }) {
         item: data,
       }}
     >
-      <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 duration-1000 hover:cursor-pointer hover:backdrop-brightness-140">
+      <div className="card gap-2.75 rounded-xl p-6 shadow-lg backdrop-brightness-120 transition-transform duration-200 hover:scale-105 hover:cursor-pointer hover:backdrop-brightness-140 active:scale-95">
         <ItemImg src={data?.sprites.default} alt={data?.name} />
         <div className="flex items-center justify-center gap-1">
           <div
