@@ -33,7 +33,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setResults([]);
-  }, [location.state]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const filterList = (data?.results ?? []).filter((p: NamedAPIResource) =>
