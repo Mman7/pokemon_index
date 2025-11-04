@@ -15,10 +15,7 @@ export default function ItemDetails() {
   return (
     <Wrapper>
       <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
-        <button
-          className="btn btn-wide text-xl"
-          onClick={() => nav("..", { state: { ...state } })}
-        >
+        <button className="btn btn-wide text-xl" onClick={() => nav(-1)}>
           <ArrowLeftFromLine />
           Explore more item
         </button>

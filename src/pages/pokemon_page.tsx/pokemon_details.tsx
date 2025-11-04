@@ -55,14 +55,10 @@ export default function PokemonDetails() {
     data.stats[4].stat.name.toUpperCase(),
     data.stats[5].stat.name.toUpperCase(),
   ];
-
   return (
     <Wrapper>
       <div className="flex flex-col gap-6 p-6">
-        <button
-          className="btn btn-wide text-xl"
-          onClick={() => nav("..", { state: { ...state } })}
-        >
+        <button className="btn btn-wide text-xl" onClick={() => nav(-1)}>
           <ArrowLeftFromLine />
           Pokemon Page
         </button>
