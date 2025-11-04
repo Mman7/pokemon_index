@@ -19,7 +19,7 @@ export default function Sidebar() {
       <SidebarItem
         title={"Home"}
         callback={() => setSelect(null)}
-        isSelected={select === "/"}
+        isSelected={select === "/" || select === "/home"}
       />
       {dividedLine}
 
