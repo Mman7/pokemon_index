@@ -35,7 +35,7 @@ export default function EvoChain({
         {evolutions.map((pokemonEvo, index) => (
           <Fragment key={index}>
             <PokemonCard
-              pokemonItemClassName={`${pokemonEvo == name && "border-1"}`}
+              itemClassName={`${pokemonEvo == name && "border-1"}`}
               key={pokemonEvo}
               name={pokemonEvo}
               pokemonImgClassName="w-34"
