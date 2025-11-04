@@ -16,6 +16,9 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage: boolean = location.pathname === "/";
+  const visiblePaths = ["/pokemon", "/item", "/berry"];
+  const isHidden = !visiblePaths.includes(location.pathname);
+
   const [results, setResults] = useState<NamedAPIResource[]>([]);
 
   const { data } = useQuery({
@@ -24,6 +27,7 @@ export default function Navbar() {
   });
 
   const clearResults = () => {
+    if (isHidden) return;
     setResults([]);
     navigate(location.pathname, {
       state: { ...location.state, searchData: [], searchInput: "" },
@@ -60,9 +64,6 @@ export default function Navbar() {
       clearTimeout(timeout);
     };
   }, [inputValue]);
-
-  const visiblePaths = ["/pokemon", "/item", "/berry"];
-  const isHidden = !visiblePaths.includes(location.pathname);
 
   return (
     <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
