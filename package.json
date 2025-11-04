@@ -18,7 +18,7 @@
     "chart.js": "^4.5.1",
     "lucide-react": "^0.546.0",
     "pokenode-ts": "^1.20.0",
-    "react": "^19.1.1",
+    "react": "^19.2.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.1.1",
     "react-error-boundary": "^6.0.0",
