@@ -12,8 +12,6 @@ export default function BerryDetails() {
   const berry: Berry = state.berry;
   const itemData: Item = state.itemData;
 
-  console.log(state);
-
   const baseStats: number[] = [
     berry.flavors[0].potency,
     berry.flavors[1].potency,
@@ -33,10 +31,7 @@ export default function BerryDetails() {
   return (
     <Wrapper>
       <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
-        <button
-          className="btn btn-wide text-xl"
-          onClick={() => nav("..", { state: { ...state } })}
-        >
+        <button className="btn btn-wide text-xl" onClick={() => nav(-1)}>
           <ArrowLeftFromLine />
           Explore more item
         </button>
