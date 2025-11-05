@@ -23,7 +23,9 @@ export default function Searchbar({
   };
 
   return (
-    <label className={`input ${isHidden && "hidden"}`}>
+    <label
+      className={`input ${isHidden && "hidden"} transition-all duration-100`}
+    >
       <svg
         className="h-[1em] opacity-50"
         xmlns="http://www.w3.org/2000/svg"
