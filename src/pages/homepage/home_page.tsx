@@ -20,7 +20,7 @@ export default function Home() {
       </ul>
       <div className="mt-auto">
         <span className="flex flex-wrap gap-2">
-          <h1 className="text-gray-400">built with :</h1>
+          <h1 className="text-gray-400">Built with :</h1>
           <div className="badge badge-soft badge-info">ReactJS</div>
           <div className="badge badge-soft badge-info">TypeScript</div>
           <div className="badge badge-soft badge-info">TailwindCSS</div>
