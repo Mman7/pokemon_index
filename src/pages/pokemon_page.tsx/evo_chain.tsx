@@ -26,7 +26,7 @@ export default function EvoChain({
     // move to the next evolution (first branch)
     current = current.evolves_to?.[0];
   }
-  if (isLoading1) <div> Loading...</div>;
+  if (isLoading1) return <div className="text-center"> Loading...</div>;
 
   return (
     <div className={`${evolutions.length == 0 && "hidden"} `}>
