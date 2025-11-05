@@ -20,7 +20,7 @@ export default function SidebarItem({
       <li key={title}>
         <button
           onClick={callback}
-          className={`block w-full px-4 py-2 text-left text-base/8 ${selectedStlyle}`}
+          className={`block w-full px-4 py-2 text-left text-base/8 duration-200 ${selectedStlyle}`}
         >
           {title}
         </button>

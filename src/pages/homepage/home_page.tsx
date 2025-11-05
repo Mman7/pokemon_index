@@ -14,9 +14,8 @@ export default function Home() {
         collector, or fan, there’s something here for everyone.
       </h2>
       <ul className="list-disc px-6 text-gray-700 dark:text-gray-400">
-        <li>Browse Pokémon by name, type, or generation.</li>
+        <li>Browse Pokémon by name</li>
         <li>View detailed stats, moves, and evolution paths.</li>
-        <li>Track your favorite Pokémon and build your personal Pokédex.</li>
         <li>Stay up-to-date with new Pokémon releases and game updates.</li>
       </ul>
       <div className="mt-auto">

@@ -15,7 +15,7 @@ export default function Sidebar() {
     <div className="mx-3 my-1.5 flex items-center border-t border-gray-700" />
   );
   return (
-    <ul className="menu bg-base-200 text-base-content min-h-full w-70 p-4 sm:w-80">
+    <ul className="menu bg-base-200 text-base-content top-16 h-[calc(100vh-4rem)] w-70 p-4 sm:w-80">
       <SidebarItem
         title={"Home"}
         callback={() => setSelect(null)}
@@ -31,6 +31,13 @@ export default function Sidebar() {
           isSelected={select === `/${item.toLowerCase()}`}
         />
       ))}
+      <a
+        className="mt-auto bg-blue-500 p-2 text-center text-white"
+        target="_blank"
+        href="https://github.com/Mman7"
+      >
+        By EricMan
+      </a>
     </ul>
   );
 }

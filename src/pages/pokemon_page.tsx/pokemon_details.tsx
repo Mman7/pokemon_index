@@ -63,7 +63,7 @@ export default function PokemonDetails() {
           Pokemon Page
         </button>
         <main className="flex flex-col gap-6 md:grid md:grid-cols-2">
-          <div className="col-span-2 flex flex-col items-center justify-center rounded-md p-8 md:flex-row md:justify-around dark:backdrop-brightness-120">
+          <div className="col-span-2 flex flex-col items-center justify-center rounded-md p-8 shadow-lg md:flex-row md:justify-around dark:backdrop-brightness-120">
             <figure className="rounded-2xl">
               <div className="indicator">
                 <audio ref={audioRef} src={data.cries.latest} />

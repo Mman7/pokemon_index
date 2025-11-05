@@ -15,7 +15,8 @@ export default function Navbar() {
   const [isFocus, setFocus] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage: boolean = location.pathname === "/";
+  const isHomePage: boolean =
+    location.pathname === "/" || location.pathname === "/home";
   const visiblePaths = ["/pokemon", "/item", "/berry"];
   const isHidden = !visiblePaths.includes(location.pathname);
 
@@ -66,7 +67,7 @@ export default function Navbar() {
   }, [inputValue]);
 
   return (
-    <div className="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
+    <div className="navbar bg-base-100 sticky top-0 z-10 px-4 shadow-sm">
       <div className="navbar-start">
         <label
           htmlFor="my-drawer-3"
