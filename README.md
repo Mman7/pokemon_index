@@ -42,5 +42,5 @@ Responsive UI: works well on mobile and desktop.
 Fast load times thanks to modern tooling and optimized builds.
 
 # Showcase
-<img width="1920" height="1024" alt="showcase" src="https://github.com/user-attachments/assets/ab9ed431-5878-49cb-89d8-2a10bbe54496" />
+<img width="1920" height="1024" alt="showcase" src="https://github.com/user-attachments/assets/b6c2dbe7-8407-4be6-8e6c-2d4a78be8c2d" />
 
