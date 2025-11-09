@@ -10,7 +10,7 @@ export default function Body() {
       </div>
       <div className="drawer-side top-16 h-[calc(100vh-4rem)]">
         <label
-          htmlFor="my-drawer-3 "
+          htmlFor="my-drawer-3"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
