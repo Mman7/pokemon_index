@@ -12,8 +12,8 @@ export default function SidebarItem({
   isSelected,
 }: SidebarItemProps) {
   const selectedStlyle = isSelected
-    ? "font-medium text-white bg-red-600 bg-red-700 "
-    : "text-black hover:backdrop-brightness-150 dark:text-white ";
+    ? "font-medium text-white! bg-red-600 bg-red-700 "
+    : "text-black hover:backdrop-brightness-150 text-white! ";
 
   return (
     <Link to={`/${title.toLocaleLowerCase()}`}>
