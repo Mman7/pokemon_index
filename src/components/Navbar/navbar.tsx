@@ -1,20 +1,24 @@
 import Searchbar from "./search_bar";
 import logo from "../../assets/logo.svg";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { namesListByCondition } from "../../api/pokemon_api";
 import { useQuery } from "@tanstack/react-query";
 import type { NamedAPIResource } from "pokenode-ts";
+import { X } from "lucide-react";
 
 const splitIdFromLink = (link: string): string => {
   return link.split("/")[6];
 };
 
 export default function Navbar() {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [isFocus, setFocus] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchResults = searchParams.get("search");
+
   const isHomePage: boolean =
     location.pathname === "/" || location.pathname === "/home";
   const visiblePaths = ["/pokemon", "/item", "/berry"];
@@ -30,6 +34,7 @@ export default function Navbar() {
   const clearResults = () => {
     if (isHidden) return;
     setResults([]);
+    setInputValue("");
     navigate(location.pathname, {
       state: { ...location.state, searchData: [], searchInput: "" },
     });
@@ -37,28 +42,56 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    setResults([]);
+    clearResults();
   }, [location.pathname]);
 
-  useEffect(() => {
-    const filterList = (data?.results ?? []).filter((p: NamedAPIResource) =>
-      p.name.toLowerCase().includes(inputValue.toLowerCase()),
-    );
-    // handle clear input
-    if (inputValue == "") clearResults();
+  const handleSearchOnClick = (value: string) => {
+    setInputValue(value);
+    setSearchParams({ search: value });
+  };
 
-    // Handle search
-    const timeout = setTimeout(() => {
-      if (inputValue !== "") {
-        setResults(filterList.slice(0, 10));
-        navigate(location.pathname, {
+  useEffect(() => {
+    if (searchResults) {
+      const filterList = (data?.results ?? []).filter((p: NamedAPIResource) =>
+        p.name.toLowerCase().includes(inputValue.toLowerCase()),
+      );
+      navigate(
+        {
+          pathname: location.pathname,
+          search: location.search,
+        },
+        {
           state: {
             ...location.state,
             searchData: filterList,
             searchInput: inputValue,
           },
-        });
-      }
+        },
+      );
+    }
+  }, [searchResults]);
+
+  const showSuggestions = () => {
+    const filterList = (data?.results ?? []).filter((p: NamedAPIResource) => {
+      return p.name.toLowerCase().includes(inputValue.toLowerCase());
+    });
+    // check the results not empty
+    setResults(filterList.slice(0, 10));
+  };
+
+  useEffect(() => {
+    // handle clear input
+    if (inputValue == "") showSuggestions();
+    // Handle search
+    const timeout = setTimeout(() => {
+      const filterList = (data?.results ?? []).filter(
+        (p: NamedAPIResource) =>
+          p.name.toLowerCase().includes(inputValue.toLowerCase()) ||
+          splitIdFromLink(p.url)
+            .toLowerCase()
+            .includes(inputValue.toLowerCase()),
+      );
+      if (inputValue !== "") setResults(filterList.slice(0, 10));
     }, 400);
 
     return () => {
@@ -100,6 +133,7 @@ export default function Navbar() {
         </div>
         <div className="relative">
           <Searchbar
+            onFocusCallback={() => showSuggestions()}
             setFocus={setFocus}
             value={inputValue}
             setInputValue={setInputValue}
@@ -107,15 +141,13 @@ export default function Navbar() {
           />
           <div
             id="search-results"
-            className={` ${inputValue !== "" ? "block" : "hidden"} bg-base-100 absolute z-10 mt-1 w-full rounded-lg text-black capitalize shadow-lg dark:text-white`}
+            className={`${!isFocus && "hidden"} bg-base-100 absolute z-10 mt-1 w-full rounded-lg text-black capitalize shadow-lg dark:text-white`}
           >
-            <ul
-              className={`${!isFocus && "hidden"} divide-yp-1 backdrop-brightness-140`}
-            >
-              {results?.map((item, index) => (
+            <ul className={`divide-yp-1 backdrop-brightness-140`}>
+              {results.map((item, index) => (
                 <li
                   key={index}
-                  onClick={() => setInputValue(item.name)}
+                  onClick={() => handleSearchOnClick(item.name)}
                   className="cursor-pointer rounded-md p-2 capitalize transition hover:bg-red-700 active:bg-red-800"
                 >
                   <span className="text-gray-400">
@@ -127,6 +159,13 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
+        <button
+          aria-label="clear searchbar"
+          onClick={() => clearResults()}
+          className={`btn btn-info ml-2 ${isHidden && "hidden"} `}
+        >
+          <X />
+        </button>
       </div>
       <div className="navbar-end"></div>
     </div>
