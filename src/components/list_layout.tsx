@@ -1,14 +1,21 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Fragment, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getPokemonsList } from "../../api/pokemon_api";
-import LoadingView from "../../components/loading";
+import LoadingView from "./loading";
 import { useLocation } from "react-router";
-import type { NamedAPIResource } from "pokenode-ts";
-import ItemList from "../../components/item_list";
-import PokemonCard from "../../components/pokemon_item_card";
+import type { NamedAPIResource, NamedAPIResourceList } from "pokenode-ts";
 
-export default function PokemonLayout() {
+interface ListLayoutProps {
+  queryKey: [string];
+  queryFn: (pageParam: any) => Promise<NamedAPIResourceList>;
+  ItemComponent: React.ComponentType<{ item: NamedAPIResource }>;
+}
+
+export function ListLayout({
+  queryKey,
+  queryFn,
+  ItemComponent,
+}: ListLayoutProps) {
   const { ref, inView } = useInView();
   const location = useLocation();
   const [searchData, setSearchData] = useState<NamedAPIResource[]>([]);
@@ -22,12 +29,15 @@ export default function PokemonLayout() {
     isFetching,
     error,
   } = useInfiniteQuery({
-    queryKey: ["pokemons"],
-    queryFn: getPokemonsList,
+    queryKey: queryKey,
+    queryFn: queryFn,
     retry: 2,
-    staleTime: 1000 * 60 * 5,
     initialPageParam: 0,
     enabled: inView,
+    staleTime: Infinity,
+    gcTime: Infinity, // v5 (cacheTime in v4)
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage.next) return undefined; // stop fetching when no more
       return pages.length * 20; // offset for next fetch
@@ -39,9 +49,8 @@ export default function PokemonLayout() {
     if (inView && hasNextPage && !isFetching) fetchNextPage();
   }, [inView]);
 
-  // scroll back to the card
   useEffect(() => {
-    let state = location.state;
+    const state = location.state;
     if (state && state.searchData) setSearchData(state.searchData);
   }, [location.state]);
 
@@ -53,22 +62,19 @@ export default function PokemonLayout() {
     searchData?.length < 1;
   const searchDataEmpty = searchData.length < 1;
   const visibleItem = !searchDataEmpty ? searchData : items;
-  if (hasNoResults)
-    return <h1 className="p-10 text-center">Pokemon Not Found</h1>;
+  if (hasNoResults) return <h1 className="p-10 text-center"> Not Found</h1>;
   if (isLoading) return <LoadingView />;
   if (error) return <div>An error occurred: {(error as Error).message}</div>;
-
   return (
     <Fragment>
       <section
         className={`grid w-full grid-cols-1 justify-items-center gap-6 p-6 md:grid-cols-2 md:justify-items-normal lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5`}
       >
         {/* Normal List */}
-        <ItemList items={visibleItem}>
-          {(item) => (
-            <PokemonCard name={item.name} pokemonImgClassName={"w-58"} />
-          )}
-        </ItemList>
+
+        {visibleItem.map((item) => (
+          <ItemComponent key={item.name} item={item} />
+        ))}
 
         {/* Reached this div will fetch more data*/}
         {searchDataEmpty && (
