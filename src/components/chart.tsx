@@ -40,9 +40,9 @@ export default function Charts({
   };
 
   useEffect(() => {
-    if(chartType == 'bar'){
+    if (chartType == "bar") {
       setMaxValue(10);
-      return
+      return;
     }
     for (let index = 0; index < stats.length; index++) {
       const element = stats[index];
@@ -71,11 +71,13 @@ export default function Charts({
   };
   const options = {
     responsive: true,
+
     //   maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: { color: textColor },
       },
+
       title: {
         display: true,
         text: labelTitle,
