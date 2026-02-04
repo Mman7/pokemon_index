@@ -1,51 +1,31 @@
-export function TypeBadges({
-  type,
-  fontSize: className,
-}: {
-  type: string;
-  fontSize: string;
-}) {
-  const defaultStyle = `badge capitalize font-medium p-3  ${className}`;
-  switch (type) {
-    case "poison":
-      return <div className={`badge-primary ${defaultStyle}`}>{type}</div>;
-    case "grass":
-      return <div className={`badge-success ${defaultStyle}`}>{type}</div>;
-    case "fire":
-      return <div className={`badge-error ${defaultStyle}`}>{type}</div>;
-    case "water":
-      return <div className={`badge-info ${defaultStyle}`}>{type}</div>;
-    case "electric":
-      return <div className={`badge-warning ${defaultStyle}`}>{type}</div>;
-    case "ice":
-      return (
-        <div className={`bg-sky-200 text-black ${defaultStyle}`}>{type}</div>
-      );
-    case "bug":
-      return <div className={`badge-accent ${defaultStyle}`}>{type}</div>;
-    case "ground":
-      return <div className={`bg-yellow-700 ${defaultStyle}`}>{type}</div>;
-    case "rock":
-      return <div className={`bg-yellow-800 ${defaultStyle}`}>{type}</div>;
-    case "dragon":
-      return <div className={`bg-violet-400 ${defaultStyle}`}>{type}</div>;
-    case "fighting":
-      return <div className={`bg-yellow-700 ${defaultStyle}`}>{type}</div>;
-    case "flying":
-      return (
-        <div className={`bg-sky-300 ${defaultStyle} text-black`}>{type}</div>
-      );
-    case "fairy":
-      return <div className={`badge-secondary ${defaultStyle}`}>{type}</div>;
-    case "psychic":
-      return <div className={`badge-secondary ${defaultStyle}`}>{type}</div>;
-    case "normal":
-      return (
-        <div className={`bg-gray-500 text-white ${defaultStyle}`}>{type}</div>
-      );
-    default:
-      return (
-        <div className={`badge badge-neutral ${defaultStyle}`}>{type}</div>
-      );
-  }
-}
+import React from "react";
+
+export const typeClassMap: Record<string, string> = {
+  poison: "badge-primary",
+  grass: "badge-success",
+  fire: "badge-error",
+  water: "badge-info",
+  electric: "badge-warning",
+  ice: "bg-sky-200 text-black",
+  bug: "badge-accent",
+  ground: "bg-yellow-700 border-yellow-700",
+  rock: "bg-yellow-800 border-yellow-800",
+  dragon: "bg-violet-400 border-violet-400",
+  fighting: "bg-yellow-700 border-yellow-700",
+  flying: "bg-sky-300 text-black",
+  fairy: "badge-secondary",
+  psychic: "badge-secondary",
+  normal: "bg-gray-600 text-white border-white",
+};
+
+export const TypeBadges = React.memo(
+  ({ type, fontSize }: { type: string; fontSize: string }) => {
+    const defaultStyle = `badge capitalize font-medium p-3  ${fontSize}`;
+    const typeClass = React.useMemo(
+      () => typeClassMap[type] ?? "badge-neutral",
+      [type],
+    );
+
+    return <div className={` ${typeClass} ${defaultStyle}`}>{type}</div>;
+  },
+);
