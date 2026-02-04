@@ -8,10 +8,11 @@ export default function ItemImg({
   imgClassName?: string;
 }) {
   return (
-    <figure className="flex items-center justify-center rounded-xl bg-gray-200/50 dark:bg-black/15">
+    <figure className="flex items-center justify-center rounded-xl bg-black/15">
       {src ? (
         <img
-          className={`${!imgClassName && "m-8"} w-32 ${imgClassName} `}
+          className={`w-full ${imgClassName}`}
+          loading="lazy"
           src={src}
           alt={alt}
         />
