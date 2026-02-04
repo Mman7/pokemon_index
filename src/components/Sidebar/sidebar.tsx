@@ -32,7 +32,7 @@ export default function Sidebar() {
         />
       ))}
       <a
-        className="mt-auto bg-blue-500 p-2 text-center text-white"
+        className="mt-auto bg-blue-500 p-2 text-center text-white!"
         target="_blank"
         href="https://github.com/Mman7"
       >
