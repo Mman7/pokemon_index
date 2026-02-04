@@ -5,6 +5,7 @@ interface SearchbarProps {
   value: string;
   setInputValue: any;
   setFocus: Function;
+  onFocusCallback: Function;
 }
 
 export default function Searchbar({
@@ -12,12 +13,16 @@ export default function Searchbar({
   value,
   setInputValue,
   setFocus,
+  onFocusCallback,
 }: SearchbarProps): JSX.Element {
   const handleChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
-  const onFocus = () => setFocus(true);
+  const onFocus = () => {
+    onFocusCallback();
+    setFocus(true);
+  };
   const onBlur = () => {
     setTimeout(() => setFocus(false), 100);
   };
