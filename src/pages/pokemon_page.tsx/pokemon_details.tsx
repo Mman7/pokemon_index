@@ -65,9 +65,9 @@ export default function PokemonDetails() {
           Pokemon Page
         </button>
         <main className="flex flex-col gap-6 md:grid md:grid-cols-2">
-          <div className="col-span-2 flex flex-col items-center justify-center rounded-md p-8 shadow-lg md:flex-row md:justify-around dark:backdrop-brightness-120">
-            <figure className="rounded-2xl">
-              <div className="indicator">
+          <div className="col-span-2 flex flex-col items-center justify-center gap-6 rounded-md md:flex-row md:justify-around">
+            <figure className="grid h-full w-full flex-2 justify-items-center rounded-2xl p-6 backdrop-brightness-120">
+              <div className="indicator m-auto">
                 <audio ref={audioRef} src={data.cries.latest} />
                 <span
                   onClick={() => playSound()}
@@ -77,7 +77,7 @@ export default function PokemonDetails() {
                 </span>
                 <img
                   src={data.sprites.front_default ?? ""}
-                  className="grid w-64 place-items-center rounded-xl bg-black/10"
+                  className="grid h-64 w-64 place-items-center rounded-xl bg-black/10"
                 />
               </div>
             </figure>

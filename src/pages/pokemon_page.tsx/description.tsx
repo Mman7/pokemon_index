@@ -15,7 +15,7 @@ export default function Description({
   );
 
   return (
-    <main className="flex w-72 flex-col gap-3.5 rounded-2xl p-3 *:items-center *:text-center md:w-1/2 md:*:items-start md:*:text-start">
+    <main className="flex flex-3 flex-col gap-3.5 rounded-2xl p-8 backdrop-brightness-120 *:items-center *:text-center md:*:items-start md:*:text-start">
       <section>
         <h1 className="text-2xl font-bold capitalize">
           #{pokemonDetails.id} {pokemonDetails.name}

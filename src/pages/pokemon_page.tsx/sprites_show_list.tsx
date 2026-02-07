@@ -67,7 +67,7 @@ function SpiritesItem({
     <div
       className={`${src == "" || (src == null && "hidden")} flex items-center justify-center rounded-2xl p-4 shadow-xl backdrop-brightness-90 ${className}`}
     >
-      <img className="w-3xs" src={src == null ? undefined : src} alt={alt} />
+      <img className="w-full" src={src == null ? undefined : src} alt={alt} />
     </div>
   );
 }

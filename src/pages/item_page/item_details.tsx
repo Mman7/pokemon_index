@@ -12,6 +12,11 @@ export default function ItemDetails() {
   const eng = item?.flavor_text_entries.filter(
     (text) => text.language.name == "en",
   );
+  const itemEffectEng = item.effect_entries.filter(
+    (text) => text.language.name == "en",
+  );
+
+  console.log(itemEffectEng);
   return (
     <Wrapper>
       <div className="*:item-center flex-col p-6 *:justify-center *:text-center md:*:text-start">
@@ -19,9 +24,15 @@ export default function ItemDetails() {
           <ArrowLeftFromLine />
           Explore more item
         </button>
-        <main className="mt-4 flex w-full flex-col gap-6 rounded p-6 shadow-lg md:grid md:grid-cols-2 dark:bg-black/10">
-          <ItemImg alt={item.name} src={item.sprites.default} />
-          <section className="flex flex-col gap-3">
+        <main className="mt-4 flex w-full flex-col gap-6 p-6 md:grid md:grid-cols-2">
+          <section className="flex rounded-2xl p-6 shadow-lg backdrop-brightness-120">
+            <ItemImg
+              alt={item.name}
+              src={item.sprites.default}
+              imgClassName="size-64 m-auto aspect-square"
+            />
+          </section>
+          <section className="flex flex-col gap-3 rounded-2xl p-6 shadow-lg backdrop-brightness-120">
             <div>
               <h1 className="text-2xl font-bold capitalize">
                 <span className="text-gray-600 dark:text-gray-300">
@@ -33,7 +44,7 @@ export default function ItemDetails() {
             </div>
             {item.effect_entries[0]?.effect && (
               <h2 className="rounded-xl bg-gray-700 p-3 text-gray-300">
-                {item.effect_entries[0].effect}
+                {itemEffectEng[0].effect}
               </h2>
             )}
             <div className="flex flex-col gap-1 font-medium *:text-2xl">

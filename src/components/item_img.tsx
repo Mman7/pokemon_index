@@ -8,7 +8,7 @@ export default function ItemImg({
   imgClassName?: string;
 }) {
   return (
-    <figure className="flex items-center justify-center rounded-xl bg-black/15">
+    <figure className="m-auto grid place-items-center rounded-xl bg-black/15">
       {src ? (
         <img
           className={`w-full ${imgClassName}`}
@@ -17,7 +17,7 @@ export default function ItemImg({
           alt={alt}
         />
       ) : (
-        <div className="grid h-38 w-38 justify-center justify-items-center p-6 text-center text-6xl">
+        <div className="grid size-38 justify-center justify-items-center p-6 text-center text-6xl">
           ?
         </div>
       )}
