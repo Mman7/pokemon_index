@@ -1,7 +1,7 @@
-import { useLayoutEffect, type JSX } from "react";
+import { useLayoutEffect, type ReactNode } from "react";
 import { useLocation } from "react-router";
 
-export const Wrapper = ({ children }: { children: JSX.Element }) => {
+export const Wrapper = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
 
   useLayoutEffect(() => {

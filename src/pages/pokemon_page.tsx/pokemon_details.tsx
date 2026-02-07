@@ -9,13 +9,14 @@ import { getPokemonSpeciesByName } from "../../api/pokemon_api";
 import { useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import type { Pokemon } from "pokenode-ts";
+import PageLoader from "../../components/page_loader";
 
 export default function PokemonDetails() {
   const location = useLocation();
   const nav = useNavigate();
   let state: any = location.state;
   const data: Pokemon | any = state.pokemon;
-  const { data: specieData } = useQuery({
+  const { data: specieData, isLoading } = useQuery({
     queryKey: [`${data.name}Specie`],
     queryFn: () => getPokemonSpeciesByName({ name: data.name }),
     staleTime: 1000 * 60 * 5,
@@ -57,6 +58,7 @@ export default function PokemonDetails() {
   ];
   return (
     <Wrapper>
+      <PageLoader isLoading={isLoading} />
       <div className="flex flex-col gap-6 p-6">
         <button className="btn btn-wide text-xl" onClick={() => nav(-1)}>
           <ArrowLeftFromLine />
