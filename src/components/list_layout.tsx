@@ -19,7 +19,7 @@ export function ListLayout({
   const { ref, inView } = useInView();
   const location = useLocation();
   const [searchData, setSearchData] = useState<NamedAPIResource[]>([]);
-
+  const [hasMounted, setHasMounted] = useState(false);
   const {
     data,
     fetchNextPage,
@@ -33,7 +33,6 @@ export function ListLayout({
     queryFn: queryFn,
     retry: 2,
     initialPageParam: 0,
-    enabled: inView,
     staleTime: Infinity,
     gcTime: Infinity, // v5 (cacheTime in v4)
     refetchOnMount: false,
@@ -44,10 +43,18 @@ export function ListLayout({
     },
   });
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   // If user reached bottom fetch more data
   useEffect(() => {
-    if (inView && hasNextPage && !isFetching) fetchNextPage();
-  }, [inView]);
+    if (!hasMounted) return;
+    if (isFetching) return;
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, hasMounted]);
 
   useEffect(() => {
     const state = location.state;
