@@ -121,7 +121,7 @@ export default function Navbar() {
             />
           </svg>
         </label>
-        <div className="ml-4 hidden items-center md:block">
+        <div className="mx-3 hidden items-center md:block">
           <img className="w-50" src={logo} alt="Pokemon Index" />
         </div>
       </div>

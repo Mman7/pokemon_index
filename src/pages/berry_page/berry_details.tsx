@@ -11,6 +11,7 @@ export default function BerryDetails() {
   const state = location.state;
   const berry: Berry = state.berry;
   const itemData: Item = state.itemData;
+  console.log(itemData);
 
   const baseStats: number[] = [
     berry.flavors[0].potency,
@@ -40,14 +41,14 @@ export default function BerryDetails() {
           Explore more item
         </button>
         <main className="mt-4 mb-10 flex flex-col gap-6 md:flex-row">
-          <section className="flex w-full rounded-2xl p-6 shadow-lg backdrop-brightness-120">
+          <section className="flex w-full flex-1 rounded-2xl p-6 shadow-lg backdrop-brightness-120">
             <ItemImg
               alt={berry.name}
               src={itemData?.sprites?.default}
               imgClassName="size-64 aspect-square"
             />
           </section>
-          <section className="flex w-full flex-col gap-3 rounded-2xl p-10 shadow-lg backdrop-brightness-120">
+          <section className="flex w-full flex-2 flex-col gap-3 rounded-2xl p-10 shadow-lg backdrop-brightness-120">
             <div>
               <h1 className="text-2xl font-bold capitalize">
                 <span className="text-gray-600 dark:text-gray-300">
@@ -57,8 +58,8 @@ export default function BerryDetails() {
               </h1>
             </div>
             {itemData?.effect_entries[0]?.effect && (
-              <h2 className="rounded-xl bg-gray-700 p-3 text-gray-300 xl:w-1/2">
-                {eng?.[0]?.text && <h2>{eng?.[0].text}</h2>}
+              <h2 className="rounded-xl bg-gray-700 p-4 text-gray-300 xl:w-3/4">
+                {eng?.[0]?.text && <p>{eng?.[0].text}</p>}
               </h2>
             )}
             <div className="flex flex-col gap-1 font-medium *:text-2xl">
@@ -67,7 +68,21 @@ export default function BerryDetails() {
                 <h2>Fling Power : {itemData.fling_power}</h2>
               )}
             </div>
-            {BerryInfo()}
+            <div className="rounded-xl bg-red-600/30 p-6 text-gray-50 capitalize xl:w-3/4">
+              <h1 className="mb-1.5 text-xl font-medium">Berry Info</h1>
+              <BerryLabel label="Growth Time" value={berry.growth_time} />
+              <BerryLabel label="Max Harvest" value={berry.max_harvest} />
+              <BerryLabel label="Size" value={berry.size} />
+              <BerryLabel label="Smoothness" value={berry.smoothness} />
+              <BerryLabel
+                label="Natural Gift Type"
+                value={berry.natural_gift_type.name}
+              />
+              <BerryLabel
+                label="Natural Gift Power"
+                value={berry.natural_gift_power}
+              />
+            </div>
             <div>
               <h1 className="mb-2 text-2xl font-bold">Category</h1>
               <div className="badge badge-neutral capitalize">
@@ -89,7 +104,7 @@ export default function BerryDetails() {
             </section>
           </section>
         </main>
-        <main className="mt-3 flex w-full flex-col gap-6 rounded p-6 shadow-lg md:grid md:grid-cols-2 dark:bg-black/10">
+        <main className="mt-3 flex w-full flex-col gap-6 rounded shadow-lg xl:max-w-220">
           <Charts
             labelTitle="Item Flavour"
             ItemName={berry.name}
@@ -101,26 +116,6 @@ export default function BerryDetails() {
       </div>
     </Wrapper>
   );
-
-  function BerryInfo() {
-    return (
-      <div className="rounded-xl bg-red-600/30 p-6 text-gray-50 capitalize xl:w-1/2">
-        <h1 className="mb-1.5 text-xl font-medium">Berry Info</h1>
-        <BerryLabel label="Growth Time" value={berry.growth_time} />
-        <BerryLabel label="Max Harvest" value={berry.max_harvest} />
-        <BerryLabel label="Size" value={berry.size} />
-        <BerryLabel label="Smoothness" value={berry.smoothness} />
-        <BerryLabel
-          label="Natural Gift Type"
-          value={berry.natural_gift_type.name}
-        />
-        <BerryLabel
-          label="Natural Gift Power"
-          value={berry.natural_gift_power}
-        />
-      </div>
-    );
-  }
 }
 
 export function BerryLabel({

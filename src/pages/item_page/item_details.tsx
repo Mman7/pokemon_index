@@ -24,15 +24,15 @@ export default function ItemDetails() {
           <ArrowLeftFromLine />
           Explore more item
         </button>
-        <main className="mt-4 flex w-full flex-col gap-6 p-6 md:grid md:grid-cols-2">
-          <section className="flex rounded-2xl p-6 shadow-lg backdrop-brightness-120">
+        <main className="mt-4 flex flex-col gap-6 p-6 md:flex-row">
+          <section className="flex flex-1 rounded-2xl p-6 shadow-lg backdrop-brightness-120">
             <ItemImg
               alt={item.name}
               src={item.sprites.default}
-              imgClassName="size-64 m-auto aspect-square"
+              imgClassName="size-54 m-auto aspect-square"
             />
           </section>
-          <section className="flex flex-col gap-3 rounded-2xl p-6 shadow-lg backdrop-brightness-120">
+          <section className="flex flex-2 flex-col gap-3 rounded-2xl p-6 shadow-lg backdrop-brightness-120">
             <div>
               <h1 className="text-2xl font-bold capitalize">
                 <span className="text-gray-600 dark:text-gray-300">
